@@ -139,7 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Wypozyczalnia.cpp" />
+    <ClCompile Include="film.cpp" />
+    <ClCompile Include="klient.cpp" />
+    <ClCompile Include="wypozyczalnia.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="film.h" />
+    <ClInclude Include="klient.h" />
+    <ClInclude Include="wypozyczalnia.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
