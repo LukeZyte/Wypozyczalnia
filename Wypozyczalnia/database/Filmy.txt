@@ -1,3 +1,1 @@
-true	Hobbit	J.R.R. Tolkien	Fantasy	20
-true	Rok 1984	George Orwell	Fikcja polityczna	30
-true	Folwark zwierzęcy	George Orwell	Nowela	15
+true	Rok 1984	George Orwell	Fikcja polityczna	30.000000

@@ -16,4 +16,5 @@ public:
 	void displayPrintMenu();
 	void displayAllFilms();
 	void displayAddFilm();
+	void removeFilm();
 };
