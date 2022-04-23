@@ -5,26 +5,30 @@
 #include <string>
 #include <fstream>
 
+void Wypozyczalnia::initializeData() {
+	Wypozyczalnia::loadFilms();
+	Wypozyczalnia::loadCustomers();
+	Wypozyczalnia::displayMenu();
+}
+
 void Wypozyczalnia::loadFilms() {
 	std::fstream fileFilms("database/Filmy.txt");
 	std::string title, author, genre, _price, available; 
 	double price;
+	filmy.clear();
 	if (fileFilms) {
 		while (!fileFilms.eof()) {
 			getline(fileFilms, available, '\t');
 			getline(fileFilms, title, '\t');
-			//std::cout << title << " ";
 			getline(fileFilms, author, '\t');
-			//std::cout << author << " ";
 			getline(fileFilms, genre, '\t');
-			//std::cout << genre << " ";
 			getline(fileFilms, _price, '\n');
 			price = std::stod(_price);	// string to double
-			//std::cout << price << std::endl;
 			Film film(true, title, author, genre, price);
 			Wypozyczalnia::filmy.push_back(film);
 		}
 	}
+	filmy.pop_back();	// usuwa ostatni film z vectora, gdyz ostatni rekord sie dublowal.
 	fileFilms.close();
 }
 
@@ -40,6 +44,7 @@ void Wypozyczalnia::loadCustomers() {
 	std::fstream fileCustomers("database/Klienci.txt");
 	std::string pesel, name, surname, gender, _age, city;
 	int age;
+	klienci.clear();
 	if (fileCustomers) {
 		while (!fileCustomers.eof()) {
 			getline(fileCustomers, pesel, '\t');
@@ -53,14 +58,19 @@ void Wypozyczalnia::loadCustomers() {
 			Wypozyczalnia::klienci.push_back(klient);
 		}
 	}
+	klienci.pop_back();
+	fileCustomers.close();
+}
+
+void Wypozyczalnia::saveCustomers() {
+	std::ofstream fileCustomers("database/Klienci.txt");
+	for (int i = 0; i < Wypozyczalnia::klienci.size(); i++) {
+		fileCustomers << Wypozyczalnia::klienci[i].printToFile();
+	}
 	fileCustomers.close();
 }
 
 void Wypozyczalnia::displayMenu() {
-	
-	Wypozyczalnia::loadFilms();
-	Wypozyczalnia::loadCustomers();
-
 	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -120,7 +130,33 @@ void Wypozyczalnia::displayFilmsMenu() {
 }
 
 void Wypozyczalnia::displayCustomersMenu() {
+	char action = NULL;
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Baza klientów" << std::endl;
+	std::cout << "\t[ 1 ] Wyœwietl wszystkich klientów" << std::endl;
+	std::cout << "\t[ 2 ] Wyœwietl klientów, którzy wypo¿yczyli film/filmy" << std::endl;
+	std::cout << "\t[ 3 ] Dodaj nowego klienta" << std::endl;
+	std::cout << "\t[ 4 ] Usuñ klienta z bazy" << std::endl;
+	std::cout << "\t[ q ] Wróæ" << std::endl;
+	std::cout << "PrzejdŸ do: ";
+	std::cin >> action;
 
+	switch (action) {
+	case 'q': Wypozyczalnia::displayMenu();
+		break;
+	case '1': Wypozyczalnia::displayAllCustomers();
+		break;
+	//case '2': Wypozyczalnia::displayAddFilm();
+	//	break;
+	//case '3': Wypozyczalnia::removeFilm();
+	//	break;
+	//case '4': Wypozyczalnia::removeFilm();
+	//	break;
+	}
 }
 
 void Wypozyczalnia::displayPrintMenu() {
@@ -156,6 +192,32 @@ void Wypozyczalnia::displayAllFilms() {
 	case 'q': Wypozyczalnia::displayFilmsMenu();
 		break;
 	default: Wypozyczalnia::displayAllFilms();
+	}
+}
+
+void Wypozyczalnia::displayAllCustomers() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Lista wszystkich klientów" << std::endl;
+
+	for (int i = 0; i < klienci.size(); i++) {
+		std::cout << "\t" << i + 1 << ". ";
+		klienci[i].showAllData();
+		std::cout << std::endl;
+	}
+
+	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
+	std::cout << "PrzejdŸ do: ";
+	std::cin >> action;
+
+	switch (action) {
+	case 'q': Wypozyczalnia::displayCustomersMenu();
+		break;
+	default: Wypozyczalnia::displayAllCustomers();
 	}
 }
 
@@ -220,16 +282,16 @@ void Wypozyczalnia::removeFilm() {
 		std::cout << std::endl;
 	}
 
-	char _number;
+	std::string _number;
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << std::endl << "Wybierz numer filmu, który chcesz usun¹æ: ";
 	std::cin >> _number;
-	if (_number == 'q') {
+	if (_number == "q") {
 		Wypozyczalnia::displayFilmsMenu();
 	}
 	else {
-		int number = (int)_number;
-		Wypozyczalnia::filmy.erase(filmy.begin() + number);
+		int number = std::stoi(_number);
+		Wypozyczalnia::filmy.erase(filmy.begin() + number - 1);
 		Wypozyczalnia::saveFilms();
 		Wypozyczalnia::removeFilm();
 	}

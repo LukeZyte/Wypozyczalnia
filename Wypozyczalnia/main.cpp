@@ -6,5 +6,5 @@ int main()
 {
 	system("chcp 1250");
 	Wypozyczalnia wypozyczalnia;
-	wypozyczalnia.displayMenu();
+	wypozyczalnia.initializeData();
 }

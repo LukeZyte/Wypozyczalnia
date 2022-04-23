@@ -1,1 +1,2 @@
 true	Rok 1984	George Orwell	Fikcja polityczna	30.000000
+true	Hobbit	Tolkien	Fantasy	50.700000
