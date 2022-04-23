@@ -152,10 +152,10 @@ void Wypozyczalnia::displayCustomersMenu() {
 		break;
 	//case '2': Wypozyczalnia::displayAddFilm();
 	//	break;
-	//case '3': Wypozyczalnia::removeFilm();
-	//	break;
-	//case '4': Wypozyczalnia::removeFilm();
-	//	break;
+	case '3': Wypozyczalnia::displayAddCustomer();
+		break;
+	case '4': Wypozyczalnia::removeCustomer();
+		break;
 	}
 }
 
@@ -230,11 +230,11 @@ void Wypozyczalnia::displayAddFilm() {
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Dodawanie filmu" << std::endl;
-	std::cout << "[ 0 ] Anuluj wprowadzanie i wróæ" << std::endl << std::endl;
+	std::cout << "[ q ] Anuluj wprowadzanie i wróæ" << std::endl << std::endl;
 	std::cout << "\tWprowadŸ tytu³ filmu: ";
 	std::getline(std::cin, title);
 	std::getline(std::cin, title);
-	if (title == "0") {
+	if (title == "q") {
 		Wypozyczalnia::displayFilmsMenu();
 	}
 	else {
@@ -261,6 +261,65 @@ void Wypozyczalnia::displayAddFilm() {
 					Wypozyczalnia::filmy.push_back(film);
 					Wypozyczalnia::saveFilms();
 					Wypozyczalnia::displayFilmsMenu();
+				}
+			}
+		}
+	}
+}
+
+void Wypozyczalnia::displayAddCustomer() {
+	std::string pesel, name, surname, gender, _age, city;
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Dodawanie nowego klienta" << std::endl;
+	std::cout << "[ q ] Anuluj wprowadzanie i wróæ" << std::endl << std::endl;
+	std::cout << "\tWprowadŸ pesel klienta: ";
+	std::getline(std::cin, pesel);
+	std::getline(std::cin, pesel);
+	if (pesel == "q") {
+		Wypozyczalnia::displayCustomersMenu();
+	}
+	else {
+		std::cout << "\tWprowadŸ imie klienta: ";
+		std::getline(std::cin, name);
+		if (name == "q") {
+			Wypozyczalnia::displayCustomersMenu();
+		}
+		else {
+			std::cout << "\tWprowadŸ nazwisko klienta: ";
+			std::getline(std::cin, surname);
+			if (surname == "q") {
+				Wypozyczalnia::displayCustomersMenu();
+			}
+			else {
+				std::cout << "\tWprowadŸ p³eæ klienta ( M / K ): ";
+				std::getline(std::cin, gender);
+				if (gender == "q") {
+					Wypozyczalnia::displayCustomersMenu();
+				}
+				else {
+					std::cout << "\tWprowadŸ wiek klienta: ";
+					std::getline(std::cin, _age);
+					int age = std::stoi(_age);
+					if (_age == "q") {
+						Wypozyczalnia::displayCustomersMenu();
+					}
+					else {
+						std::cout << "\tWprowadŸ miasto, z którego pochodzi klient: ";
+						std::getline(std::cin, city);
+						if (city == "q") {
+							Wypozyczalnia::displayCustomersMenu();
+						}
+						else {
+							Klient klient(pesel, name, surname, gender, age, city);
+							Wypozyczalnia::klienci.push_back(klient);
+							Wypozyczalnia::saveCustomers();
+							Wypozyczalnia::displayCustomersMenu();
+						}
+					}
 				}
 			}
 		}
@@ -294,5 +353,35 @@ void Wypozyczalnia::removeFilm() {
 		Wypozyczalnia::filmy.erase(filmy.begin() + number - 1);
 		Wypozyczalnia::saveFilms();
 		Wypozyczalnia::removeFilm();
+	}
+}
+
+void Wypozyczalnia::removeCustomer() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Usuwanie klienta z bazy" << std::endl;
+
+	for (int i = 0; i < klienci.size(); i++) {
+		std::cout << "\t" << i + 1 << ". ";
+		klienci[i].showAllData();
+		std::cout << std::endl;
+	}
+
+	std::string _number;
+	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
+	std::cout << std::endl << "Wybierz numer klienta, którego chcesz usun¹æ z bazy: ";
+	std::cin >> _number;
+	if (_number == "q") {
+		Wypozyczalnia::displayCustomersMenu();
+	}
+	else {
+		int number = std::stoi(_number);
+		Wypozyczalnia::klienci.erase(klienci.begin() + number - 1);
+		Wypozyczalnia::saveCustomers();
+		Wypozyczalnia::removeCustomer();
 	}
 }

@@ -19,5 +19,7 @@ public:
 	void displayAllFilms();
 	void displayAllCustomers();
 	void displayAddFilm();
+	void displayAddCustomer();
 	void removeFilm();
+	void removeCustomer();
 };
