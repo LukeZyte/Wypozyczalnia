@@ -15,7 +15,7 @@ void Wypozyczalnia::loadFilms() {
 	std::fstream fileFilms("database/Filmy.txt");
 	std::string title, author, genre, _price, available; 
 	double price;
-	filmy.clear();
+	films.clear();
 	if (fileFilms) {
 		while (!fileFilms.eof()) {
 			getline(fileFilms, available, '\t');
@@ -25,17 +25,17 @@ void Wypozyczalnia::loadFilms() {
 			getline(fileFilms, _price, '\n');
 			price = std::stod(_price);	// string to double
 			Film film(true, title, author, genre, price);
-			Wypozyczalnia::filmy.push_back(film);
+			Wypozyczalnia::films.push_back(film);
 		}
 	}
-	filmy.pop_back();	// usuwa ostatni film z vectora, gdyz ostatni rekord sie dublowal.
+	films.pop_back();	// usuwa ostatni film z vectora, gdyz ostatni rekord sie dublowal.
 	fileFilms.close();
 }
 
 void Wypozyczalnia::saveFilms() {
 	std::ofstream fileFilms("database/Filmy.txt");
-	for (int i = 0; i < Wypozyczalnia::filmy.size(); i++) {
-		fileFilms << Wypozyczalnia::filmy[i].printToFile();
+	for (int i = 0; i < Wypozyczalnia::films.size(); i++) {
+		fileFilms << Wypozyczalnia::films[i].printToFile();
 	}
 	fileFilms.close();
 }
@@ -44,7 +44,7 @@ void Wypozyczalnia::loadCustomers() {
 	std::fstream fileCustomers("database/Klienci.txt");
 	std::string pesel, name, surname, gender, _age, city;
 	int age;
-	klienci.clear();
+	customers.clear();
 	if (fileCustomers) {
 		while (!fileCustomers.eof()) {
 			getline(fileCustomers, pesel, '\t');
@@ -55,17 +55,17 @@ void Wypozyczalnia::loadCustomers() {
 			age = std::stoi(_age);	// string to int
 			getline(fileCustomers, city, '\n');
 			Klient klient(pesel, name, surname, gender, age, city);
-			Wypozyczalnia::klienci.push_back(klient);
+			Wypozyczalnia::customers.push_back(klient);
 		}
 	}
-	klienci.pop_back();
+	customers.pop_back();
 	fileCustomers.close();
 }
 
 void Wypozyczalnia::saveCustomers() {
 	std::ofstream fileCustomers("database/Klienci.txt");
-	for (int i = 0; i < Wypozyczalnia::klienci.size(); i++) {
-		fileCustomers << Wypozyczalnia::klienci[i].printToFile();
+	for (int i = 0; i < Wypozyczalnia::customers.size(); i++) {
+		fileCustomers << Wypozyczalnia::customers[i].printToFile();
 	}
 	fileCustomers.close();
 }
@@ -178,9 +178,9 @@ void Wypozyczalnia::displayAllFilms() {
 	std::cout << std::endl;
 	std::cout << "Lista wszystkich filmów" << std::endl;
 	
-	for (int i = 0; i < filmy.size(); i++) {
+	for (int i = 0; i < films.size(); i++) {
 		std::cout << "\t" << i+1 << ". ";
-		filmy[i].showAllData();
+		films[i].showAllData();
 		std::cout << std::endl;
 	}
 
@@ -204,9 +204,9 @@ void Wypozyczalnia::displayAllCustomers() {
 	std::cout << std::endl;
 	std::cout << "Lista wszystkich klientów" << std::endl;
 
-	for (int i = 0; i < klienci.size(); i++) {
+	for (int i = 0; i < customers.size(); i++) {
 		std::cout << "\t" << i + 1 << ". ";
-		klienci[i].showAllData();
+		customers[i].showAllData();
 		std::cout << std::endl;
 	}
 
@@ -258,7 +258,7 @@ void Wypozyczalnia::displayAddFilm() {
 				else {
 					double price = std::stod(_price);
 					Film film(true, title, author, genre, price);
-					Wypozyczalnia::filmy.push_back(film);
+					Wypozyczalnia::films.push_back(film);
 					Wypozyczalnia::saveFilms();
 					Wypozyczalnia::displayFilmsMenu();
 				}
@@ -315,7 +315,7 @@ void Wypozyczalnia::displayAddCustomer() {
 						}
 						else {
 							Klient klient(pesel, name, surname, gender, age, city);
-							Wypozyczalnia::klienci.push_back(klient);
+							Wypozyczalnia::customers.push_back(klient);
 							Wypozyczalnia::saveCustomers();
 							Wypozyczalnia::displayCustomersMenu();
 						}
@@ -335,9 +335,9 @@ void Wypozyczalnia::removeFilm() {
 	std::cout << std::endl;
 	std::cout << "Usuwanie filmu" << std::endl;
 
-	for (int i = 0; i < filmy.size(); i++) {
+	for (int i = 0; i < films.size(); i++) {
 		std::cout << "\t" << i + 1 << ". ";
-		filmy[i].showAllData();
+		films[i].showAllData();
 		std::cout << std::endl;
 	}
 
@@ -350,7 +350,7 @@ void Wypozyczalnia::removeFilm() {
 	}
 	else {
 		int number = std::stoi(_number);
-		Wypozyczalnia::filmy.erase(filmy.begin() + number - 1);
+		Wypozyczalnia::films.erase(films.begin() + number - 1);
 		Wypozyczalnia::saveFilms();
 		Wypozyczalnia::removeFilm();
 	}
@@ -365,9 +365,9 @@ void Wypozyczalnia::removeCustomer() {
 	std::cout << std::endl;
 	std::cout << "Usuwanie klienta z bazy" << std::endl;
 
-	for (int i = 0; i < klienci.size(); i++) {
+	for (int i = 0; i < customers.size(); i++) {
 		std::cout << "\t" << i + 1 << ". ";
-		klienci[i].showAllData();
+		customers[i].showAllData();
 		std::cout << std::endl;
 	}
 
@@ -380,7 +380,7 @@ void Wypozyczalnia::removeCustomer() {
 	}
 	else {
 		int number = std::stoi(_number);
-		Wypozyczalnia::klienci.erase(klienci.begin() + number - 1);
+		Wypozyczalnia::customers.erase(customers.begin() + number - 1);
 		Wypozyczalnia::saveCustomers();
 		Wypozyczalnia::removeCustomer();
 	}

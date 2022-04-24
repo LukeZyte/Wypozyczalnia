@@ -4,6 +4,7 @@
 #include <iomanip>
 
 class Film {
+protected:
 	std::string title;
 	std::string author;
 	std::string genre;
@@ -13,8 +14,14 @@ public:
 	Film()
 		: Film(false, "brak", "brak", "brak", 0.00) {}
 
-	Film(bool _available, std::string _title, std::string _author, std::string _genre, double _price)
-		: available(_available), title(_title), author(_author), genre(_genre), price(_price) {}
+	Film(bool _available = false, std::string _title = "brak", std::string _author = "brak", std::string _genre = "brak", double _price = 0.00) {
+		available = _available;
+		title = _title;
+		author = _author;
+		genre = _genre;
+		price = _price;
+		available = _available;
+	}
 
 	void showAllData();
 	std::string printToFile();

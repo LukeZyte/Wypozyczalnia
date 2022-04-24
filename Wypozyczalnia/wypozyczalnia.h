@@ -1,11 +1,13 @@
 #pragma once
 #include "film.h"
 #include "klient.h"
+#include "WypozyczonyFilm.h"
 #include <vector>
 
 class Wypozyczalnia {
-	std::vector <Film> filmy;
-	std::vector <Klient> klienci;
+	std::vector <Film> films;
+	std::vector <Klient> customers;
+	std::vector <WypozyczonyFilm> borrowerdFilms;
 public:
 	void initializeData();
 	void displayMenu();

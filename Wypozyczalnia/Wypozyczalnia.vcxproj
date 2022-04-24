@@ -143,11 +143,13 @@
     <ClCompile Include="klient.cpp" />
     <ClCompile Include="wypozyczalnia.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WypozyczonyFilm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="film.h" />
     <ClInclude Include="klient.h" />
     <ClInclude Include="wypozyczalnia.h" />
+    <ClInclude Include="WypozyczonyFilm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
