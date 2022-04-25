@@ -1,0 +1,2 @@
+false	Hobbit	Tolkien	Kreskowka	20.20	300	20.12.2002
+false	Koziolek	Boguslaw	Bajka	30.99	100	21.01.2020

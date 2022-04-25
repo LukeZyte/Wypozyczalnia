@@ -13,6 +13,7 @@ public:
 		borrowersPesel = _borrowersPesel;
 		borrowsDate = _borrowsDate;
 	}
-
+	std::string getBorrowersPesel() { return borrowersPesel; }
 	void showAllData();
+	std::string printToFile();
 };

@@ -17,4 +17,8 @@ public:
 
 	void showAllData();
 	std::string printToFile();
+
+	std::string getPesel() { return pesel; }
+	std::string getName() { return name; }
+	std::string getSurname() { return surname; }
 };

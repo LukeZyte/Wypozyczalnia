@@ -1,5 +1,5 @@
 000	Łukasz	Jarząb	M	21	Cieszyn
 100	Kacper	Moskała	M	20	Zabrze
-200	Krzysztof	Masłowski	M	22	Katowice
 300	Aleksander	Foberowy	M	18	Cieszyn
 400	Aleksandra	Sobczak	K	15	Katowice
+Patryk	Bbubu	tak	M	22	Ohaby

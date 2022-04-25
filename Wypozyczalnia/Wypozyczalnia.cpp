@@ -8,7 +8,50 @@
 void Wypozyczalnia::initializeData() {
 	Wypozyczalnia::loadFilms();
 	Wypozyczalnia::loadCustomers();
+	Wypozyczalnia::loadBorrowedFilms();
 	Wypozyczalnia::displayMenu();
+}
+
+Klient Wypozyczalnia::searchCustomer(std::string pesel) {
+	for (Klient customer : customers) {
+		if (customer.getPesel() == pesel) {
+			return customer;
+		}
+	}
+	std::cout << "Nie znaleziono klienta !!!" << std::endl;
+}
+
+void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c), void(*d), void(*e), void(*f), void(*g), void(*h), void(*i), void(*j)) {
+	char action = _action[0];
+	switch (action) {
+	case 'q': if (&a) {
+		&a;
+	}
+			else {
+		&def;
+	}
+		break;
+	case '1': &b;
+		break;
+	case '2': &c;
+		break;
+	case '3': &d;
+		break;
+	case '4': &e;
+		break;
+	case '5': &f;
+		break;
+	case '6': &g;
+		break;
+	case '7': &h;
+		break;
+	case '8': &i;
+		break;
+	case '9': &j;
+		break;
+	default: std::cout << "Proszê wprowadziæ poprawn¹ œcie¿kê!" << std::endl;
+		break;
+	}
 }
 
 void Wypozyczalnia::loadFilms() {
@@ -70,6 +113,37 @@ void Wypozyczalnia::saveCustomers() {
 	fileCustomers.close();
 }
 
+void Wypozyczalnia::loadBorrowedFilms() {
+	std::fstream fileBorrowedFilms("database/WypozyczoneFilmy.txt");
+	std::string title, author, genre, _price, available, pesel, borrowsDate;
+	double price;
+	borrowedFilms.clear();
+	if (fileBorrowedFilms) {
+		while (!fileBorrowedFilms.eof()) {
+			getline(fileBorrowedFilms, available, '\t');
+			getline(fileBorrowedFilms, title, '\t');
+			getline(fileBorrowedFilms, author, '\t');
+			getline(fileBorrowedFilms, genre, '\t');
+			getline(fileBorrowedFilms, _price, '\t');
+			price = std::stod(_price);	// string to double
+			getline(fileBorrowedFilms, pesel, '\t');
+			getline(fileBorrowedFilms, borrowsDate, '\n');
+			WypozyczonyFilm wypozyczonyFilm(false, title, author, genre, price, pesel, borrowsDate);
+			Wypozyczalnia::borrowedFilms.push_back(wypozyczonyFilm);
+		}
+	}
+	borrowedFilms.pop_back();	// usuwa ostatni film z vectora, gdyz ostatni rekord sie dublowal.
+	fileBorrowedFilms.close();
+}
+
+void Wypozyczalnia::saveBorrowedFilms() {
+	std::ofstream fileBorrowedFilms("database/WypozyczoneFilmy.txt");
+	for (int i = 0; i < Wypozyczalnia::borrowedFilms.size(); i++) {
+		fileBorrowedFilms << Wypozyczalnia::borrowedFilms[i].printToFile();
+	}
+	fileBorrowedFilms.close();
+}
+
 void Wypozyczalnia::displayMenu() {
 	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
@@ -121,6 +195,10 @@ void Wypozyczalnia::displayFilmsMenu() {
 	case 'q': Wypozyczalnia::displayMenu();
 		break;
 	case '1': Wypozyczalnia::displayAllFilms();
+		break;
+	case '2': Wypozyczalnia::displayAllBorrowedFilms();
+		break;
+	case '4': displayBorrowFilm();
 		break;
 	case '5': Wypozyczalnia::displayAddFilm();
 		break;
@@ -324,6 +402,44 @@ void Wypozyczalnia::displayAddCustomer() {
 			}
 		}
 	}
+}
+
+void Wypozyczalnia::displayAllBorrowedFilms() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Lista wszystkich wypo¿yczonych filmów" << std::endl;
+
+	for (int i = 0; i < borrowedFilms.size(); i++) {
+		std::cout << "\t" << i + 1 << ". ";
+		borrowedFilms[i].showAllData();
+		Klient actualCustomer = searchCustomer(borrowedFilms[i].getBorrowersPesel());
+		std::cout << " | Wypo¿yczy³: " << actualCustomer.getName() << " " << actualCustomer.getSurname();
+		std::cout << std::endl;
+	}
+
+	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
+	std::cout << "PrzejdŸ do: ";
+	std::cin >> action;
+
+	switch (action) {
+	case 'q': Wypozyczalnia::displayFilmsMenu();
+		break;
+	default: Wypozyczalnia::displayAllBorrowedFilms();
+	}
+}
+
+void Wypozyczalnia::displayBorrowFilm() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Wypo¿ycz film" << std::endl;
 }
 
 void Wypozyczalnia::removeFilm() {
