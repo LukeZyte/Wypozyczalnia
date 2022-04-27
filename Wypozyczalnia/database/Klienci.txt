@@ -2,4 +2,3 @@
 100	Kacper	Moskała	M	20	Zabrze
 300	Aleksander	Foberowy	M	18	Cieszyn
 400	Aleksandra	Sobczak	K	15	Katowice
-Patryk	Bbubu	tak	M	22	Ohaby

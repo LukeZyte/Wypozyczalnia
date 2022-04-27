@@ -10,6 +10,7 @@ class Wypozyczalnia {
 	std::vector <WypozyczonyFilm> borrowedFilms;
 public:
 	Klient searchCustomer(std::string pesel);
+	Film searchFilm(std::string id);
 	void initializeData();
 	void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c), void(*d), void(*e), void(*f), void(*g), void(*h), void(*i), void(*j));
 	void displayMenu();
@@ -24,6 +25,7 @@ public:
 	void displayPrintMenu();
 	void displayAllFilms();
 	void displayAllCustomers();
+	void displayAvailableFilms();
 	void displayAllBorrowedFilms();
 	void displayAddFilm();
 	void displayAddCustomer();

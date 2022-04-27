@@ -21,6 +21,15 @@ Klient Wypozyczalnia::searchCustomer(std::string pesel) {
 	std::cout << "Nie znaleziono klienta !!!" << std::endl;
 }
 
+Film Wypozyczalnia::searchFilm(std::string id) {
+	for (Film film : films) {
+		if (film.getId() == id) {
+			return film;
+		}
+	}
+	std::cout << "Nie znalezniono filmu !!!" << std::endl;
+}
+
 void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c), void(*d), void(*e), void(*f), void(*g), void(*h), void(*i), void(*j)) {
 	char action = _action[0];
 	switch (action) {
@@ -56,18 +65,26 @@ void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c),
 
 void Wypozyczalnia::loadFilms() {
 	std::fstream fileFilms("database/Filmy.txt");
-	std::string title, author, genre, _price, available; 
+	std::string id, title, author, genre, _price, _available;
+	bool available;
 	double price;
 	films.clear();
 	if (fileFilms) {
 		while (!fileFilms.eof()) {
-			getline(fileFilms, available, '\t');
+			getline(fileFilms, id, '\t');
+			getline(fileFilms, _available, '\t');
+			if (_available == "true") {
+				available = true;
+			}
+			else {
+				available = false;
+			}
 			getline(fileFilms, title, '\t');
 			getline(fileFilms, author, '\t');
 			getline(fileFilms, genre, '\t');
 			getline(fileFilms, _price, '\n');
 			price = std::stod(_price);	// string to double
-			Film film(true, title, author, genre, price);
+			Film film(id, available, title, author, genre, price);
 			Wypozyczalnia::films.push_back(film);
 		}
 	}
@@ -115,11 +132,12 @@ void Wypozyczalnia::saveCustomers() {
 
 void Wypozyczalnia::loadBorrowedFilms() {
 	std::fstream fileBorrowedFilms("database/WypozyczoneFilmy.txt");
-	std::string title, author, genre, _price, available, pesel, borrowsDate;
+	std::string id, title, author, genre, _price, available, pesel, borrowsDate;
 	double price;
 	borrowedFilms.clear();
 	if (fileBorrowedFilms) {
 		while (!fileBorrowedFilms.eof()) {
+			getline(fileBorrowedFilms, id, '\t');
 			getline(fileBorrowedFilms, available, '\t');
 			getline(fileBorrowedFilms, title, '\t');
 			getline(fileBorrowedFilms, author, '\t');
@@ -128,7 +146,7 @@ void Wypozyczalnia::loadBorrowedFilms() {
 			price = std::stod(_price);	// string to double
 			getline(fileBorrowedFilms, pesel, '\t');
 			getline(fileBorrowedFilms, borrowsDate, '\n');
-			WypozyczonyFilm wypozyczonyFilm(false, title, author, genre, price, pesel, borrowsDate);
+			WypozyczonyFilm wypozyczonyFilm(id, false, title, author, genre, price, pesel, borrowsDate);
 			Wypozyczalnia::borrowedFilms.push_back(wypozyczonyFilm);
 		}
 	}
@@ -198,7 +216,9 @@ void Wypozyczalnia::displayFilmsMenu() {
 		break;
 	case '2': Wypozyczalnia::displayAllBorrowedFilms();
 		break;
-	case '4': displayBorrowFilm();
+	case '3': Wypozyczalnia::displayAvailableFilms();
+		break;
+	case '4': Wypozyczalnia::displayBorrowFilm();
 		break;
 	case '5': Wypozyczalnia::displayAddFilm();
 		break;
@@ -299,8 +319,37 @@ void Wypozyczalnia::displayAllCustomers() {
 	}
 }
 
+void Wypozyczalnia::displayAvailableFilms() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Lista wszystkich dostêpnych w magazynie filmów" << std::endl;
+	int index = 0;
+	for (int i = 0; i < films.size(); i++) {
+		if (films[i].getAvailable()) {
+			index++;
+			std::cout << "\t" << index << ". ";
+			films[i].showAllData();
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
+	std::cout << "PrzejdŸ do: ";
+	std::cin >> action;
+
+	switch (action) {
+	case 'q': Wypozyczalnia::displayFilmsMenu();
+		break;
+	default: Wypozyczalnia::displayAvailableFilms();
+	}
+}
+
 void Wypozyczalnia::displayAddFilm() {
-	std::string title, author, genre;
+	std::string id, title, author, genre;
 	std::string _price;
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -309,36 +358,43 @@ void Wypozyczalnia::displayAddFilm() {
 	std::cout << std::endl;
 	std::cout << "Dodawanie filmu" << std::endl;
 	std::cout << "[ q ] Anuluj wprowadzanie i wróæ" << std::endl << std::endl;
-	std::cout << "\tWprowadŸ tytu³ filmu: ";
-	std::getline(std::cin, title);
-	std::getline(std::cin, title);
+	std::cout << "\tWprowadŸ id filmu: ";
+	std::getline(std::cin, id);
+	std::getline(std::cin, id);
 	if (title == "q") {
-		Wypozyczalnia::displayFilmsMenu();
+		displayFilmsMenu();
 	}
 	else {
-		std::cout << "\tWprowadŸ autora filmu: ";
-		std::getline(std::cin, author);
-		if (author == "q") {
+		std::cout << "\tWprowadŸ tytu³ filmu: ";
+		std::getline(std::cin, title);
+		if (title == "q") {
 			Wypozyczalnia::displayFilmsMenu();
 		}
 		else {
-			std::cout << "\tWprowadŸ gatunek filmu: ";
-			std::getline(std::cin, genre);
-			if (genre == "q") {
+			std::cout << "\tWprowadŸ autora filmu: ";
+			std::getline(std::cin, author);
+			if (author == "q") {
 				Wypozyczalnia::displayFilmsMenu();
 			}
 			else {
-				std::cout << "\tWprowadŸ cenê filmu: ";
-				std::cin >> _price;
-				if (_price == "q") {
+				std::cout << "\tWprowadŸ gatunek filmu: ";
+				std::getline(std::cin, genre);
+				if (genre == "q") {
 					Wypozyczalnia::displayFilmsMenu();
 				}
 				else {
-					double price = std::stod(_price);
-					Film film(true, title, author, genre, price);
-					Wypozyczalnia::films.push_back(film);
-					Wypozyczalnia::saveFilms();
-					Wypozyczalnia::displayFilmsMenu();
+					std::cout << "\tWprowadŸ cenê filmu: ";
+					std::cin >> _price;
+					if (_price == "q") {
+						Wypozyczalnia::displayFilmsMenu();
+					}
+					else {
+						double price = std::stod(_price);
+						Film film(id, true, title, author, genre, price);
+						Wypozyczalnia::films.push_back(film);
+						Wypozyczalnia::saveFilms();
+						Wypozyczalnia::displayFilmsMenu();
+					}
 				}
 			}
 		}
@@ -433,13 +489,90 @@ void Wypozyczalnia::displayAllBorrowedFilms() {
 }
 
 void Wypozyczalnia::displayBorrowFilm() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	std::string _number, pesel, selectedTitle, selectedAuthor;
+	int number;
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Wypo¿ycz film" << std::endl;
+	int index = 0;
+	for (int i = 0; i < films.size(); i++) {
+		if (films[i].getAvailable()) {
+			index++;
+			std::cout << "\t" << index << ". ";
+			films[i].showAllData();
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
+	std::cout << "Wybierz numer filmu, który chcesz wypo¿yczyæ: ";
+	std::cin >> _number;
+	number = std::stoi(_number);
+
+	if (_number == "q") {
+		Wypozyczalnia::displayFilmsMenu();
+	}
+	else if (number > 0 and number <= index) {
+		//Film actualFilm;
+		index = 0;
+		for (int i = 0; i < films.size(); i++) {
+			if (films[i].getAvailable()) {
+				index++;
+				if (index == number) {
+					Film actualFilm = searchFilm(films[i].getId());
+					selectedTitle = actualFilm.getTitle();
+					selectedAuthor = actualFilm.getAuthor();
+					break;
+				}
+			}
+		}
+		std::cout << std::endl;
+
+		std::cout << "WprowadŸ pesel osoby po¿yczaj¹cej: ";
+		std::cin >> pesel;
+		Klient actualCustomer = searchCustomer(pesel);
+		
+		if (actualCustomer.getPesel() == pesel) {
+			std::cout << "Czy aby na pewno chcesz wypo¿yczyæ film: \"" << selectedTitle << "\" - " << selectedAuthor << " tej osobie: (" << actualCustomer.getPesel() << ") " << actualCustomer.getName() << " " << actualCustomer.getSurname() << "?" << std::endl;
+			std::cout << "tak / nie ? ";
+			std::string approve;
+			std::cin >> approve;
+			if (approve == "tak") {
+				index = 0;
+				for (int i = 0; i < films.size(); i++) {
+					if (films[i].getAvailable()) {
+						index++;
+						if (index == number) {
+							films[i].swapAvailable();
+							WypozyczonyFilm newBorrowedFilm(films[i].getId(), films[i].getAvailable(), films[i].getTitle(), films[i].getAuthor(), films[i].getGenre(), films[i].getPrice(), actualCustomer.getPesel(), "10.10.1010");
+							borrowedFilms.push_back(newBorrowedFilm);
+							std::cout << "Wypo¿yczono wybrany film!" << std::endl;
+							break;
+						}
+					}
+				}
+			}
+			else {
+				displayBorrowFilm();
+			}
+		}
+		else {
+			std::cout << "WprowadŸ pesel pasujacy do któregoœ z klientów w bazie!" << std::endl;
+			displayBorrowFilm();
+		}
+		system("PAUSE");
+		saveFilms();
+		saveBorrowedFilms();
+		displayFilmsMenu();
+	}
+	else {
+		std::cout << "Podano nieprawid³owy numer filmu!" << std::endl;
+		system("PAUSE");
+		displayBorrowFilm();
+	}
 }
 
 void Wypozyczalnia::removeFilm() {
