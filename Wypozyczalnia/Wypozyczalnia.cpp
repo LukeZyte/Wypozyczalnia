@@ -72,23 +72,24 @@ void Wypozyczalnia::loadFilms() {
 	if (fileFilms) {
 		while (!fileFilms.eof()) {
 			getline(fileFilms, id, '\t');
-			getline(fileFilms, _available, '\t');
-			if (_available == "true") {
-				available = true;
+			if (id != "") {
+				getline(fileFilms, _available, '\t');
+				if (_available == "true") {
+					available = true;
+				}
+				else {
+					available = false;
+				}
+				getline(fileFilms, title, '\t');
+				getline(fileFilms, author, '\t');
+				getline(fileFilms, genre, '\t');
+				getline(fileFilms, _price, '\n');
+				price = std::stod(_price);	// string to double
+				Film film(id, available, title, author, genre, price);
+				Wypozyczalnia::films.push_back(film);
 			}
-			else {
-				available = false;
-			}
-			getline(fileFilms, title, '\t');
-			getline(fileFilms, author, '\t');
-			getline(fileFilms, genre, '\t');
-			getline(fileFilms, _price, '\n');
-			price = std::stod(_price);	// string to double
-			Film film(id, available, title, author, genre, price);
-			Wypozyczalnia::films.push_back(film);
 		}
 	}
-	films.pop_back();	// usuwa ostatni film z vectora, gdyz ostatni rekord sie dublowal.
 	fileFilms.close();
 }
 
@@ -102,23 +103,32 @@ void Wypozyczalnia::saveFilms() {
 
 void Wypozyczalnia::loadCustomers() {
 	std::fstream fileCustomers("database/Klienci.txt");
-	std::string pesel, name, surname, gender, _age, city;
+	std::string _haveFilms, pesel, name, surname, gender, _age, city;
 	int age;
+	bool haveFilms;
 	customers.clear();
 	if (fileCustomers) {
 		while (!fileCustomers.eof()) {
-			getline(fileCustomers, pesel, '\t');
-			getline(fileCustomers, name, '\t');
-			getline(fileCustomers, surname, '\t');
-			getline(fileCustomers, gender, '\t');
-			getline(fileCustomers, _age, '\t');
-			age = std::stoi(_age);	// string to int
-			getline(fileCustomers, city, '\n');
-			Klient klient(pesel, name, surname, gender, age, city);
-			Wypozyczalnia::customers.push_back(klient);
+			getline(fileCustomers, _haveFilms, '\t');
+			if (_haveFilms != "") {
+				if (_haveFilms == "true") {
+					haveFilms = true;
+				}
+				else {
+					haveFilms = false;
+				}
+				getline(fileCustomers, pesel, '\t');
+				getline(fileCustomers, name, '\t');
+				getline(fileCustomers, surname, '\t');
+				getline(fileCustomers, gender, '\t');
+				getline(fileCustomers, _age, '\t');
+				age = std::stoi(_age);	// string to int
+				getline(fileCustomers, city, '\n');
+				Klient klient(haveFilms, pesel, name, surname, gender, age, city);
+				Wypozyczalnia::customers.push_back(klient);
+			}
 		}
 	}
-	customers.pop_back();
 	fileCustomers.close();
 }
 
@@ -138,19 +148,21 @@ void Wypozyczalnia::loadBorrowedFilms() {
 	if (fileBorrowedFilms) {
 		while (!fileBorrowedFilms.eof()) {
 			getline(fileBorrowedFilms, id, '\t');
-			getline(fileBorrowedFilms, available, '\t');
-			getline(fileBorrowedFilms, title, '\t');
-			getline(fileBorrowedFilms, author, '\t');
-			getline(fileBorrowedFilms, genre, '\t');
-			getline(fileBorrowedFilms, _price, '\t');
-			price = std::stod(_price);	// string to double
-			getline(fileBorrowedFilms, pesel, '\t');
-			getline(fileBorrowedFilms, borrowsDate, '\n');
-			WypozyczonyFilm wypozyczonyFilm(id, false, title, author, genre, price, pesel, borrowsDate);
-			Wypozyczalnia::borrowedFilms.push_back(wypozyczonyFilm);
+			if (id != "") {
+				//getline(fileBorrowedFilms, id, '\t');
+				getline(fileBorrowedFilms, available, '\t');
+				getline(fileBorrowedFilms, title, '\t');
+				getline(fileBorrowedFilms, author, '\t');
+				getline(fileBorrowedFilms, genre, '\t');
+				getline(fileBorrowedFilms, _price, '\t');
+				price = std::stod(_price);	// string to double
+				getline(fileBorrowedFilms, pesel, '\t');
+				getline(fileBorrowedFilms, borrowsDate, '\n');
+				WypozyczonyFilm wypozyczonyFilm(id, false, title, author, genre, price, pesel, borrowsDate);
+				Wypozyczalnia::borrowedFilms.push_back(wypozyczonyFilm);
+			}
 		}
 	}
-	borrowedFilms.pop_back();	// usuwa ostatni film z vectora, gdyz ostatni rekord sie dublowal.
 	fileBorrowedFilms.close();
 }
 
@@ -248,8 +260,8 @@ void Wypozyczalnia::displayCustomersMenu() {
 		break;
 	case '1': Wypozyczalnia::displayAllCustomers();
 		break;
-	//case '2': Wypozyczalnia::displayAddFilm();
-	//	break;
+	case '2': Wypozyczalnia::displayBorrowers();
+		break;
 	case '3': Wypozyczalnia::displayAddCustomer();
 		break;
 	case '4': Wypozyczalnia::removeCustomer();
@@ -316,6 +328,33 @@ void Wypozyczalnia::displayAllCustomers() {
 	case 'q': Wypozyczalnia::displayCustomersMenu();
 		break;
 	default: Wypozyczalnia::displayAllCustomers();
+	}
+}
+
+void Wypozyczalnia::displayBorrowers() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Lista klientów, którzy wypo¿yczyli jakiœ film / filmy" << std::endl;
+
+	for (Klient customer : customers) {
+		if (customer.getHaveFilms()) {
+			customer.showAllData();
+			std::cout << std::endl;
+		}
+	}
+
+	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
+	std::cout << "PrzejdŸ do: ";
+	std::cin >> action;
+
+	switch (action) {
+	case 'q': Wypozyczalnia::displayCustomersMenu();
+		break;
+	default: Wypozyczalnia::displayBorrowers();
 	}
 }
 
@@ -448,7 +487,7 @@ void Wypozyczalnia::displayAddCustomer() {
 							Wypozyczalnia::displayCustomersMenu();
 						}
 						else {
-							Klient klient(pesel, name, surname, gender, age, city);
+							Klient klient(false, pesel, name, surname, gender, age, city);
 							Wypozyczalnia::customers.push_back(klient);
 							Wypozyczalnia::saveCustomers();
 							Wypozyczalnia::displayCustomersMenu();
@@ -531,6 +570,11 @@ void Wypozyczalnia::displayBorrowFilm() {
 		}
 		std::cout << std::endl;
 
+		for (Klient customer : customers) {
+			customer.showAllData();
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
 		std::cout << "WprowadŸ pesel osoby po¿yczaj¹cej: ";
 		std::cin >> pesel;
 		Klient actualCustomer = searchCustomer(pesel);
@@ -554,6 +598,11 @@ void Wypozyczalnia::displayBorrowFilm() {
 						}
 					}
 				}
+				for (int i = 0; i < customers.size(); i++) {
+					if (customers[i].getPesel() == pesel && !customers[i].getHaveFilms()) {
+						customers[i].swapHaveFilms();
+					}
+				}
 			}
 			else {
 				displayBorrowFilm();
@@ -564,6 +613,7 @@ void Wypozyczalnia::displayBorrowFilm() {
 			displayBorrowFilm();
 		}
 		system("PAUSE");
+		saveCustomers();
 		saveFilms();
 		saveBorrowedFilms();
 		displayFilmsMenu();

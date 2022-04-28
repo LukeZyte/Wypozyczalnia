@@ -1,4 +1,4 @@
-000	Łukasz	Jarząb	M	21	Cieszyn
-100	Kacper	Moskała	M	20	Zabrze
-300	Aleksander	Foberowy	M	18	Cieszyn
-400	Aleksandra	Sobczak	K	15	Katowice
+true	100	Kacper	Moskała	M	20	Zabrze
+false	300	Aleksander	Foberowy	M	18	Cieszyn
+true	400	Aleksandra	Sobczak	K	15	Katowice
+false	123	Michal	Gorbaczov	M	89	Cieszyn

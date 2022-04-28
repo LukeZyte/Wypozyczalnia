@@ -6,7 +6,7 @@ void WypozyczonyFilm::showAllData() {
 
 std::string WypozyczonyFilm::printToFile() {
 	std::string stream = id + "\t";
-	stream = "false\t";
+	stream = stream + "false\t";
 	std::string fixedPrice = std::to_string(price);
 
 	stream = stream + title + "\t" + author + "\t" + genre + "\t" + fixedPrice + "\t" + borrowersPesel + "\t" + borrowsDate + "\n";

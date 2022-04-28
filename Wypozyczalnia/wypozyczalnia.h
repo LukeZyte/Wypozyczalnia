@@ -25,6 +25,7 @@ public:
 	void displayPrintMenu();
 	void displayAllFilms();
 	void displayAllCustomers();
+	void displayBorrowers();
 	void displayAvailableFilms();
 	void displayAllBorrowedFilms();
 	void displayAddFilm();
