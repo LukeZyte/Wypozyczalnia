@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
+#include <vector>
 
 class Klient {
+	std::vector <Film> hisFilms;
 	bool haveFilms;
 	std::string pesel;
 	std::string name;

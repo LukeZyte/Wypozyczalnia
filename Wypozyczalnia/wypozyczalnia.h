@@ -31,6 +31,7 @@ public:
 	void displayAddFilm();
 	void displayAddCustomer();
 	void displayBorrowFilm();
+	void returnFilm();
 	void removeFilm();
 	void removeCustomer();
 };

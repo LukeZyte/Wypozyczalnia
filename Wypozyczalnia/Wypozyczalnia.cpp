@@ -215,8 +215,9 @@ void Wypozyczalnia::displayFilmsMenu() {
 	std::cout << "\t[ 2 ] Wyœwietl wypo¿yczone filmy" << std::endl;
 	std::cout << "\t[ 3 ] Wyœwietl dostêpne filmy" << std::endl;
 	std::cout << "\t[ 4 ] Wypo¿ycz film" << std::endl;
-	std::cout << "\t[ 5 ] Dodaj film" << std::endl;
-	std::cout << "\t[ 6 ] Usuñ film" << std::endl;
+	std::cout << "\t[ 5 ] Zwróæ film" << std::endl;
+	std::cout << "\t[ 6 ] Dodaj film" << std::endl;
+	std::cout << "\t[ 7 ] Usuñ film" << std::endl;
 	std::cout << "\t[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
 	std::cin >> action;
@@ -232,9 +233,11 @@ void Wypozyczalnia::displayFilmsMenu() {
 		break;
 	case '4': Wypozyczalnia::displayBorrowFilm();
 		break;
-	case '5': Wypozyczalnia::displayAddFilm();
+	case '5': Wypozyczalnia::returnFilm();
 		break;
-	case '6': Wypozyczalnia::removeFilm();
+	case '6': Wypozyczalnia::displayAddFilm();
+		break;
+	case '7': Wypozyczalnia::removeFilm();
 		break;
 	}
 }
@@ -622,6 +625,49 @@ void Wypozyczalnia::displayBorrowFilm() {
 		std::cout << "Podano nieprawid³owy numer filmu!" << std::endl;
 		system("PAUSE");
 		displayBorrowFilm();
+	}
+}
+
+void Wypozyczalnia::returnFilm() {
+	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	system("cls");
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	std::cout << std::endl;
+	std::cout << "Zwróæ film" << std::endl;
+	for (int i = 0; i < borrowedFilms.size(); i++) {
+		if (!borrowedFilms[i].getAvailable()) {
+			std::cout << i + 1 << ". ";
+			borrowedFilms[i].showAllData();
+			std::cout << std::endl;
+		}
+	}
+	std::cout << std::endl;
+	std::cout << "Wybierz numer filmu, który chcesz zwróciæ: ";
+	std::cin >> action;
+	int number = action;
+	// zmiana dostepnosci filmu
+	for (int i = 0; i < films.size(); i++) {
+		if (films[i].getId() == borrowedFilms[number - 1].getId()) {
+			films[i].swapAvailable();
+		}
+	}
+	for (int i = 0; i < customers.size(); i++) {
+		if (customers[i].getPesel() == borrowedFilms[number - 1].getBorrowersPesel()) {
+			//
+		}
+	}
+	// usuniecie filmu z vektora wypozyczonych filmow
+	if (number > 0 and number <= borrowedFilms.size()) {
+		borrowedFilms.erase(borrowedFilms.begin() + number - 1);
+	}
+	
+	switch (action) {
+	case 'q': Wypozyczalnia::displayFilmsMenu();
+		break;
+	default: Wypozyczalnia::returnFilm();
+		break;
 	}
 }
 
