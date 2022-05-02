@@ -1,4 +1,4 @@
-true	100	Kacper	Moskała	M	20	Zabrze
-false	300	Aleksander	Foberowy	M	18	Cieszyn
-true	400	Aleksandra	Sobczak	K	15	Katowice
-false	123	Michal	Gorbaczov	M	89	Cieszyn
+0	100	Kacper	Moskała	M	20	Zabrze
+0	300	Aleksander	Foberowy	M	18	Cieszyn
+0	400	Aleksandra	Sobczak	K	15	Katowice
+0	123	Michal	Gorbaczov	M	89	Cieszyn

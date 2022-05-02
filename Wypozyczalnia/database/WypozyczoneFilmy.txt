@@ -1,3 +1,0 @@
-1000	false	Rok 1984	George Orwell	Fikcja polityczna	30.000000	100	10.10.1010
-2000	false	Hobbit	Tolkien	Fantasy	50.000000	100	10.10.1010
-3000	false	Lala	baba	nana	55.000000	400	10.10.1010

@@ -1,6 +1,6 @@
-1000	false	Rok 1984	George Orwell	Fikcja polityczna	30.000000
-2000	false	Hobbit	Tolkien	Fantasy	50.000000
-3000	false	Lala	baba	nana	55.000000
+1000	true	Rok 1984	George Orwell	Fikcja polityczna	30.000000
+2000	true	Hobbit	Tolkien	Fantasy	50.000000
+3000	true	Lala	baba	nana	55.000000
 4000	true	Hobbit	Tolkien	Kreskowka	20.200000
 5000	true	babaluga	fargua	fajny	30.200000
 6000	true	Spiaca Krolewna	Disney	bajka	11.110000
