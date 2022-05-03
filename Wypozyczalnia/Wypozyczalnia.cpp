@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <random>
 
 void Wypozyczalnia::initializeData() {
 	Wypozyczalnia::loadFilms();
@@ -404,43 +405,65 @@ void Wypozyczalnia::displayAddFilm() {
 	std::cout << std::endl;
 	std::cout << "Dodawanie filmu" << std::endl;
 	std::cout << "[ q ] Anuluj wprowadzanie i wróæ" << std::endl << std::endl;
-	std::cout << "\tWprowadŸ id filmu: ";
-	std::getline(std::cin, id);
-	std::getline(std::cin, id);
-	if (id == "q") {
-		displayFilmsMenu();
+
+	std::random_device r;
+	std::default_random_engine randomNumber(r());
+	std::uniform_int_distribution<int> uniform_dist(1, 10000);	// losowa liczba z zakresu
+	int _id = uniform_dist(randomNumber);
+	id = std::to_string(_id);
+
+	bool duped = true;	// czy id to duplikat
+	int maxIter = 0;	// zatrzymuje sprawdzanie 
+	do {
+		maxIter++;
+		duped = false;
+		for (Film film : films) {
+			if (film.getId() == id) {
+				std::random_device r;
+				std::default_random_engine randomNumber(r());
+				_id = uniform_dist(randomNumber);
+				id = std::to_string(_id);
+				duped = true;
+			}
+		}
+		if (maxIter == 9999) {
+			duped = false;
+			std::cout << "Osi¹gniêto limit iloœci filmów w bazie danych! - Nie mo¿na dodaæ nowych filmów" << std::endl;
+			system("PAUSE");
+			displayFilmsMenu();
+		}
+	} while (duped);
+
+	std::cout << "\tWprowadŸ tytu³ filmu: ";
+	std::getline(std::cin, title);
+	std::getline(std::cin, title);
+	if (title == "q") {
+		Wypozyczalnia::displayFilmsMenu();
 	}
 	else {
-		std::cout << "\tWprowadŸ tytu³ filmu: ";
-		std::getline(std::cin, title);
-		if (title == "q") {
+		std::cout << "\tWprowadŸ autora filmu: ";
+		std::getline(std::cin, author);
+		if (author == "q") {
 			Wypozyczalnia::displayFilmsMenu();
 		}
 		else {
-			std::cout << "\tWprowadŸ autora filmu: ";
-			std::getline(std::cin, author);
-			if (author == "q") {
+			std::cout << "\tWprowadŸ gatunek filmu: ";
+			std::getline(std::cin, genre);
+			if (genre == "q") {
 				Wypozyczalnia::displayFilmsMenu();
 			}
 			else {
-				std::cout << "\tWprowadŸ gatunek filmu: ";
-				std::getline(std::cin, genre);
-				if (genre == "q") {
+				std::cout << "\tWprowadŸ cenê filmu: ";
+				std::cin >> _price;
+				if (_price == "q") {
 					Wypozyczalnia::displayFilmsMenu();
 				}
 				else {
-					std::cout << "\tWprowadŸ cenê filmu: ";
-					std::cin >> _price;
-					if (_price == "q") {
-						Wypozyczalnia::displayFilmsMenu();
-					}
-					else {
-						double price = std::stod(_price);
-						Film film(id, true, title, author, genre, price);
-						Wypozyczalnia::films.push_back(film);
-						Wypozyczalnia::saveFilms();
-						Wypozyczalnia::displayFilmsMenu();
-					}
+					double price = std::stod(_price);
+					Film film(id, true, title, author, genre, price);
+					Wypozyczalnia::films.push_back(film);
+					Wypozyczalnia::saveFilms();
+					Wypozyczalnia::displayFilmsMenu();
 				}
 			}
 		}
@@ -601,7 +624,13 @@ void Wypozyczalnia::displayBorrowFilm() {
 							films[i].swapAvailable();
 							WypozyczonyFilm newBorrowedFilm(films[i].getId(), films[i].getAvailable(), films[i].getTitle(), films[i].getAuthor(), films[i].getGenre(), films[i].getPrice(), actualCustomer.getPesel(), "10.10.1010");
 							borrowedFilms.push_back(newBorrowedFilm);
-							actualCustomer.incNumOfFilms();
+
+							for (int i = 0; i < customers.size(); i++) {
+								if (actualCustomer.getPesel() == customers[i].getPesel()) {
+									customers[i].incNumOfFilms();
+								}
+							}
+
 							std::cout << "Wypo¿yczono wybrany film!" << std::endl;
 							break;
 						}

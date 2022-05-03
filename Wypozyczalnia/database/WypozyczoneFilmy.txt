@@ -1,0 +1,4 @@
+2	false	nana	lala	fala	55.550000	100	10.10.1010
+1000	false	Rok 1984	George Orwell	Fikcja polityczna	30.000000	100	10.10.1010
+5000	false	babaluga	fargua	fajny	30.200000	400	10.10.1010
+4000	false	Hobbit	Tolkien	Kreskowka	20.200000	300	10.10.1010
