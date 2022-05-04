@@ -746,11 +746,16 @@ void Wypozyczalnia::removeCustomer() {
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Usuwanie klienta z bazy" << std::endl;
+	std::cout << "Je¿eli szukanego klienta nie ma na liœcie, mo¿e to oznaczaæ, ¿e posiada on aktualnie wypo¿yczony film i nale¿y go najpierw zwróciæ." << std::endl;
 
+	int index = 0;
 	for (int i = 0; i < customers.size(); i++) {
-		std::cout << "\t" << i + 1 << ". ";
-		customers[i].showAllData();
-		std::cout << std::endl;
+		if (customers[i].getNumOfFilms() == 0) {
+			index++;
+			std::cout << "\t" << index << ". ";
+			customers[i].showAllData();
+			std::cout << std::endl;
+		}
 	}
 
 	std::string _number;
@@ -762,7 +767,17 @@ void Wypozyczalnia::removeCustomer() {
 	}
 	else {
 		int number = std::stoi(_number);
-		Wypozyczalnia::customers.erase(customers.begin() + number - 1);
+		int indexAll = 0;
+		int indexAvailable = 0;
+		for (int i = 0; i < customers.size(); i++) {
+			indexAll++;
+			if (customers[i].getNumOfFilms() == 0) {
+				indexAvailable++;
+				if (indexAvailable == number) {
+					Wypozyczalnia::customers.erase(customers.begin() + indexAll - 1);
+				}
+			}
+		}
 		Wypozyczalnia::saveCustomers();
 		Wypozyczalnia::removeCustomer();
 	}
