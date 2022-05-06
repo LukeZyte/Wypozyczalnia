@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS	// wylacza blad spowodowany zabezpieczeniami
+
 #include "wypozyczalnia.h"
 #include "klient.h"
 #include "film.h"
@@ -5,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include <random>
+#include <ctime>
 
 void Wypozyczalnia::initializeData() {
 	Wypozyczalnia::loadFilms();
@@ -31,6 +34,7 @@ Film Wypozyczalnia::searchFilm(std::string id) {
 	std::cout << "Nie znalezniono filmu !!!" << std::endl;
 }
 
+/*
 void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c), void(*d), void(*e), void(*f), void(*g), void(*h), void(*i), void(*j)) {
 	char action = _action[0];
 	switch (action) {
@@ -63,6 +67,7 @@ void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c),
 		break;
 	}
 }
+*/
 
 void Wypozyczalnia::loadFilms() {
 	std::fstream fileFilms("database/Filmy.txt");
@@ -536,6 +541,8 @@ void Wypozyczalnia::displayAllBorrowedFilms() {
 		borrowedFilms[i].showAllData();
 		Klient actualCustomer = searchCustomer(borrowedFilms[i].getBorrowersPesel());
 		std::cout << " | Wypo¿yczy³: " << actualCustomer.getName() << " " << actualCustomer.getSurname();
+		std::cout << " - dnia: ";
+		std::cout << borrowedFilms[i].getBorrowsDate();
 		std::cout << std::endl;
 	}
 
@@ -548,6 +555,26 @@ void Wypozyczalnia::displayAllBorrowedFilms() {
 		break;
 	default: Wypozyczalnia::displayAllBorrowedFilms();
 	}
+}
+
+std::string Wypozyczalnia::currentDate() {
+	time_t t = time(NULL);
+	tm* tPtr = localtime(&t);
+	std::string today;
+	if (tPtr->tm_mday < 10) {									// dzien miesiaca
+		today = "0" + std::to_string(tPtr->tm_mday) + "-";
+	}
+	else {
+		today = std::to_string(tPtr->tm_mday) + "-";
+	}
+	if (tPtr->tm_mon < 9) {										// miesiac
+		today += "0" + std::to_string(tPtr->tm_mon + 1) + "-";
+	}
+	else {
+		today += std::to_string(tPtr->tm_mon + 1) + "-";
+	}
+	today += std::to_string(tPtr->tm_year + 1900);				// rok
+	return today;
 }
 
 void Wypozyczalnia::displayBorrowFilm() {
@@ -615,7 +642,8 @@ void Wypozyczalnia::displayBorrowFilm() {
 						index++;
 						if (index == number) {
 							films[i].swapAvailable();
-							WypozyczonyFilm newBorrowedFilm(films[i].getId(), films[i].getAvailable(), films[i].getTitle(), films[i].getAuthor(), films[i].getGenre(), films[i].getPrice(), actualCustomer.getPesel(), "10.10.1010");
+							std::string currentDate = Wypozyczalnia::currentDate();
+							WypozyczonyFilm newBorrowedFilm(films[i].getId(), films[i].getAvailable(), films[i].getTitle(), films[i].getAuthor(), films[i].getGenre(), films[i].getPrice(), actualCustomer.getPesel(), currentDate);
 							borrowedFilms.push_back(newBorrowedFilm);
 
 							for (int i = 0; i < customers.size(); i++) {

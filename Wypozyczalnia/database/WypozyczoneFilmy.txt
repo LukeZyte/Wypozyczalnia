@@ -1,2 +1,2 @@
-1000	false	Rok 1984	George Orwell	Fikcja polityczna	30.000000	100	10.10.1010
 206	false	Shrek	DreamWorks	przygodowe	39.990000	100	10.10.1010
+2000	false	Hobbit	Tolkien	Fantasy	50.000000	300	06-05-2022

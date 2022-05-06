@@ -30,6 +30,7 @@ public:
 	void displayAllBorrowedFilms();
 	void displayAddFilm();
 	void displayAddCustomer();
+	std::string currentDate();
 	void displayBorrowFilm();
 	void returnFilm();
 	void removeFilm();

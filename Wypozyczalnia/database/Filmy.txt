@@ -1,4 +1,4 @@
-1000	false	Rok 1984	George Orwell	Fikcja polityczna	30.000000
-2000	true	Hobbit	Tolkien	Fantasy	50.000000
+1000	true	Rok 1984	George Orwell	Fikcja polityczna	30.000000
+2000	false	Hobbit	Tolkien	Fantasy	50.000000
 6000	true	Spiaca Krolewna	Disney	bajka	11.110000
 206	false	Shrek	DreamWorks	przygodowe	39.990000
