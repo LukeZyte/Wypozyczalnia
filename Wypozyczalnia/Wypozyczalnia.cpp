@@ -112,12 +112,6 @@ void Wypozyczalnia::loadCustomers() {
 		while (!fileCustomers.eof()) {
 			getline(fileCustomers, _numOfFilms, '\t');
 			if (_numOfFilms != "") {
-				//if (_numOfFilms == "true") {
-				//	haveFilms = true;
-				//}
-				//else {
-				//	haveFilms = false;
-				//}
 				numOfFilms = std::stoi(_numOfFilms);
 				getline(fileCustomers, pesel, '\t');
 				getline(fileCustomers, name, '\t');
@@ -151,7 +145,6 @@ void Wypozyczalnia::loadBorrowedFilms() {
 		while (!fileBorrowedFilms.eof()) {
 			getline(fileBorrowedFilms, id, '\t');
 			if (id != "") {
-				//getline(fileBorrowedFilms, id, '\t');
 				getline(fileBorrowedFilms, available, '\t');
 				getline(fileBorrowedFilms, title, '\t');
 				getline(fileBorrowedFilms, author, '\t');
@@ -716,11 +709,15 @@ void Wypozyczalnia::removeFilm() {
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Usuwanie filmu" << std::endl;
-
+	std::cout << "Je¿eli filmu nie ma na licie, to mo¿e znaczyæ, ¿e jest on aktualnie wypo¿yczony i nale¿y go najpierw zwróciæ." << std::endl;
+	int index = 0;
 	for (int i = 0; i < films.size(); i++) {
-		std::cout << "\t" << i + 1 << ". ";
-		films[i].showAllData();
-		std::cout << std::endl;
+		if (films[i].getAvailable()) {
+			index++;
+			std::cout << "\t" << index << ". ";
+			films[i].showAllData();
+			std::cout << std::endl;
+		}
 	}
 
 	std::string _number;
@@ -732,7 +729,17 @@ void Wypozyczalnia::removeFilm() {
 	}
 	else {
 		int number = std::stoi(_number);
-		Wypozyczalnia::films.erase(films.begin() + number - 1);
+		int indexAll = 0;
+		int indexAvailable = 0;
+		for (int i = 0; i < films.size(); i++) {
+			indexAll++;
+			if (films[i].getAvailable()) {
+				indexAvailable++;
+				if (indexAvailable == number) {
+					Wypozyczalnia::films.erase(films.begin() + indexAll - 1);
+				}
+			}
+		}
 		Wypozyczalnia::saveFilms();
 		Wypozyczalnia::removeFilm();
 	}

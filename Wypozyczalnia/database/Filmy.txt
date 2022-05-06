@@ -1,5 +1,4 @@
 1000	false	Rok 1984	George Orwell	Fikcja polityczna	30.000000
 2000	true	Hobbit	Tolkien	Fantasy	50.000000
-4000	false	Hobbit	Tolkien	Kreskowka	20.200000
-5000	false	babaluga	fargua	fajny	30.200000
 6000	true	Spiaca Krolewna	Disney	bajka	11.110000
+206	false	Shrek	DreamWorks	przygodowe	39.990000
