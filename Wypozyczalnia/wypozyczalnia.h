@@ -9,6 +9,7 @@ class Wypozyczalnia {
 	std::vector <Klient> customers;
 	std::vector <WypozyczonyFilm> borrowedFilms;
 public:
+	bool isStringANumber(std::string stream);
 	Klient searchCustomer(std::string pesel);
 	Film searchFilm(std::string id);
 	void initializeData();
@@ -20,6 +21,7 @@ public:
 	void saveFilms();
 	void saveCustomers();
 	void saveBorrowedFilms();
+	bool checkSelection(char);
 	void displayFilmsMenu();
 	void displayCustomersMenu();
 	void displayPrintMenu();
@@ -32,7 +34,7 @@ public:
 	void displayAddCustomer();
 	std::string currentDate();
 	void displayBorrowFilm();
-	void returnFilm();
-	void removeFilm();
-	void removeCustomer();
+	void displayReturnFilm();
+	void displayRemoveFilm();
+	void displayRemoveCustomer();
 };

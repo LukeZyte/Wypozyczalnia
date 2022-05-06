@@ -9,6 +9,19 @@
 #include <random>
 #include <ctime>
 
+bool Wypozyczalnia::isStringANumber(std::string stream) {
+	for (int i = 0; i < stream.size(); i++) {
+		bool isCorrect = false;
+		if (stream[i] == '0' or stream[i] == '1' or stream[i] == '2' or stream[i] == '3' or stream[i] == '4' or stream[i] == '5' or stream[i] == '6' or stream[i] == '7' or stream[i] == '8' or stream[i] == '9') {
+			isCorrect = true;
+		}
+		if (!isCorrect) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void Wypozyczalnia::initializeData() {
 	Wypozyczalnia::loadFilms();
 	Wypozyczalnia::loadCustomers();
@@ -23,6 +36,8 @@ Klient Wypozyczalnia::searchCustomer(std::string pesel) {
 		}
 	}
 	std::cout << "Nie znaleziono klienta !!!" << std::endl;
+	system("PAUSE");
+	displayFilmsMenu();
 }
 
 Film Wypozyczalnia::searchFilm(std::string id) {
@@ -32,6 +47,8 @@ Film Wypozyczalnia::searchFilm(std::string id) {
 		}
 	}
 	std::cout << "Nie znalezniono filmu !!!" << std::endl;
+	system("PAUSE");
+	displayFilmsMenu();
 }
 
 /*
@@ -174,8 +191,20 @@ void Wypozyczalnia::saveBorrowedFilms() {
 	fileBorrowedFilms.close();
 }
 
+bool Wypozyczalnia::checkSelection(char stream) {
+	if (1) {
+		return true;
+	}
+	else {
+		std::cout << "Wprowadzono nieoczekiwan¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+		return false;
+	}
+}
+
 void Wypozyczalnia::displayMenu() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;	// Zmienna wyboru czynnosci uzytkownika
+	//std::string action = "1";
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -188,23 +217,29 @@ void Wypozyczalnia::displayMenu() {
 	std::cout << "\t[ q ] Zamknij program" << std::endl << std::endl;
 	std::cout << "WprowadŸ cyfrê interesuj¹cej Ciê czynnoœci, aby przejœæ dalej." << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
 
-	switch (action) {
-	case 'q': exit(0);
-		break;
-	case '1': Wypozyczalnia::displayFilmsMenu();
-		break;
-	case '2': Wypozyczalnia::displayCustomersMenu();
-		break;
-	case '3': Wypozyczalnia::displayPrintMenu();
-		break;
-	default: Wypozyczalnia::displayMenu();
+	//std::cin.clear();
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': exit(0);
+			break;
+		case '1': Wypozyczalnia::displayFilmsMenu();
+			break;
+		case '2': Wypozyczalnia::displayCustomersMenu();
+			break;
+		case '3': Wypozyczalnia::displayPrintMenu();
+			break;
+		default: Wypozyczalnia::displayMenu();
+		}
+	}
+	else {
+		displayMenu();
 	}
 }
 
 void Wypozyczalnia::displayFilmsMenu() {
-	char action = NULL;
+	char action;
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -220,30 +255,33 @@ void Wypozyczalnia::displayFilmsMenu() {
 	std::cout << "\t[ 7 ] Usuñ film" << std::endl;
 	std::cout << "\t[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
-
-	switch (action) {
-	case 'q': Wypozyczalnia::displayMenu();
-		break;
-	case '1': Wypozyczalnia::displayAllFilms();
-		break;
-	case '2': Wypozyczalnia::displayAllBorrowedFilms();
-		break;
-	case '3': Wypozyczalnia::displayAvailableFilms();
-		break;
-	case '4': Wypozyczalnia::displayBorrowFilm();
-		break;
-	case '5': Wypozyczalnia::returnFilm();
-		break;
-	case '6': Wypozyczalnia::displayAddFilm();
-		break;
-	case '7': Wypozyczalnia::removeFilm();
-		break;
+	
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayMenu();
+			break;
+		case '1': Wypozyczalnia::displayAllFilms();
+			break;
+		case '2': Wypozyczalnia::displayAllBorrowedFilms();
+			break;
+		case '3': Wypozyczalnia::displayAvailableFilms();
+			break;
+		case '4': Wypozyczalnia::displayBorrowFilm();
+			break;
+		case '5': Wypozyczalnia::displayReturnFilm();
+			break;
+		case '6': Wypozyczalnia::displayAddFilm();
+			break;
+		case '7': Wypozyczalnia::displayRemoveFilm();
+			break;
+		default: Wypozyczalnia::displayFilmsMenu();
+		}
 	}
 }
 
 void Wypozyczalnia::displayCustomersMenu() {
-	char action = NULL;
+	char action;
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -256,19 +294,22 @@ void Wypozyczalnia::displayCustomersMenu() {
 	std::cout << "\t[ 4 ] Usuñ klienta z bazy" << std::endl;
 	std::cout << "\t[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
 
-	switch (action) {
-	case 'q': Wypozyczalnia::displayMenu();
-		break;
-	case '1': Wypozyczalnia::displayAllCustomers();
-		break;
-	case '2': Wypozyczalnia::displayBorrowers();
-		break;
-	case '3': Wypozyczalnia::displayAddCustomer();
-		break;
-	case '4': Wypozyczalnia::removeCustomer();
-		break;
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayMenu();
+			break;
+		case '1': Wypozyczalnia::displayAllCustomers();
+			break;
+		case '2': Wypozyczalnia::displayBorrowers();
+			break;
+		case '3': Wypozyczalnia::displayAddCustomer();
+			break;
+		case '4': Wypozyczalnia::displayRemoveCustomer();
+			break;
+		default: displayCustomersMenu();
+		}
 	}
 }
 
@@ -283,7 +324,7 @@ void Wypozyczalnia::displayPrintMenu() {
 }
 
 void Wypozyczalnia::displayAllFilms() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -299,17 +340,19 @@ void Wypozyczalnia::displayAllFilms() {
 
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
-
-	switch (action) {
-	case 'q': Wypozyczalnia::displayFilmsMenu();
-		break;
-	default: Wypozyczalnia::displayAllFilms();
+	
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayFilmsMenu();
+			break;
+		default: Wypozyczalnia::displayAllFilms();
+		}
 	}
 }
 
 void Wypozyczalnia::displayAllCustomers() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -325,17 +368,19 @@ void Wypozyczalnia::displayAllCustomers() {
 
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
-
-	switch (action) {
-	case 'q': Wypozyczalnia::displayCustomersMenu();
-		break;
-	default: Wypozyczalnia::displayAllCustomers();
+	
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayCustomersMenu();
+			break;
+		default: Wypozyczalnia::displayAllCustomers();
+		}
 	}
 }
 
 void Wypozyczalnia::displayBorrowers() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -355,17 +400,19 @@ void Wypozyczalnia::displayBorrowers() {
 
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
-
-	switch (action) {
-	case 'q': Wypozyczalnia::displayCustomersMenu();
-		break;
-	default: Wypozyczalnia::displayBorrowers();
+	
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayCustomersMenu();
+			break;
+		default: Wypozyczalnia::displayBorrowers();
+		}
 	}
 }
 
 void Wypozyczalnia::displayAvailableFilms() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -384,19 +431,21 @@ void Wypozyczalnia::displayAvailableFilms() {
 
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
-
-	switch (action) {
-	case 'q': Wypozyczalnia::displayFilmsMenu();
-		break;
-	default: Wypozyczalnia::displayAvailableFilms();
+	
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayFilmsMenu();
+			break;
+		default: Wypozyczalnia::displayAvailableFilms();
+		}
 	}
 }
 
 void Wypozyczalnia::displayAddFilm() {
+	system("cls");
 	std::string id, title, author, genre;
 	std::string _price;
-	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -469,8 +518,8 @@ void Wypozyczalnia::displayAddFilm() {
 }
 
 void Wypozyczalnia::displayAddCustomer() {
-	std::string pesel, name, surname, gender, _age, city;
 	system("cls");
+	std::string pesel, name, surname, gender, _age, city;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -528,7 +577,7 @@ void Wypozyczalnia::displayAddCustomer() {
 }
 
 void Wypozyczalnia::displayAllBorrowedFilms() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -548,12 +597,14 @@ void Wypozyczalnia::displayAllBorrowedFilms() {
 
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "PrzejdŸ do: ";
-	std::cin >> action;
-
-	switch (action) {
-	case 'q': Wypozyczalnia::displayFilmsMenu();
-		break;
-	default: Wypozyczalnia::displayAllBorrowedFilms();
+	
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayFilmsMenu();
+			break;
+		default: Wypozyczalnia::displayAllBorrowedFilms();
+		}
 	}
 }
 
@@ -578,9 +629,9 @@ std::string Wypozyczalnia::currentDate() {
 }
 
 void Wypozyczalnia::displayBorrowFilm() {
+	system("cls");
 	std::string _number, pesel, selectedTitle, selectedAuthor;
 	int number;
-	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -599,8 +650,14 @@ void Wypozyczalnia::displayBorrowFilm() {
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "Wybierz numer filmu, który chcesz wypo¿yczyæ: ";
 	std::cin >> _number;
-	if (_number != "q") {
+	
+	if (_number != "q" and isStringANumber(_number)) {
 		number = std::stoi(_number);
+	}
+	else {
+		std::cout << "Wprowadzono nieoczekiwan¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+		displayBorrowFilm();
 	}
 	if (_number == "q") {
 		Wypozyczalnia::displayFilmsMenu();
@@ -679,7 +736,7 @@ void Wypozyczalnia::displayBorrowFilm() {
 	}
 }
 
-void Wypozyczalnia::returnFilm() {
+void Wypozyczalnia::displayReturnFilm() {
 	std::string action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
@@ -696,10 +753,17 @@ void Wypozyczalnia::returnFilm() {
 	}
 	std::cout << std::endl;
 	std::cout << "Wybierz numer filmu, który chcesz zwróciæ: ";
+
 	std::cin >> action;
-	int number;
-	if (action != "q") {
+	int number = 0;
+	if (action != "q" and isStringANumber(action)) {
 		number = std::stoi(action);
+	}
+	else {
+		std::cout << "Wprowadzono b³êdn¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+	}
+	if (number > 0 and number <= borrowedFilms.size()) {
 		// zmiana dostepnosci filmu
 		for (int i = 0; i < films.size(); i++) {
 			if (films[i].getId() == borrowedFilms[number - 1].getId()) {
@@ -721,16 +785,20 @@ void Wypozyczalnia::returnFilm() {
 		saveFilms();
 		saveCustomers();
 	}
+	
 	switch (action[0]) {
 	case 'q': Wypozyczalnia::displayFilmsMenu();
 		break;
-	default: Wypozyczalnia::returnFilm();
-		break;
+	default: {
+		std::cout << "Wprowadzono wartoœæ spoza listy!" << std::endl;
+		system("PAUSE");
+		Wypozyczalnia::displayReturnFilm();
+		}
 	}
 }
 
-void Wypozyczalnia::removeFilm() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+void Wypozyczalnia::displayRemoveFilm() {
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -755,7 +823,7 @@ void Wypozyczalnia::removeFilm() {
 	if (_number == "q") {
 		Wypozyczalnia::displayFilmsMenu();
 	}
-	else {
+	else if (isStringANumber(_number)) {
 		int number = std::stoi(_number);
 		int indexAll = 0;
 		int indexAvailable = 0;
@@ -769,12 +837,17 @@ void Wypozyczalnia::removeFilm() {
 			}
 		}
 		Wypozyczalnia::saveFilms();
-		Wypozyczalnia::removeFilm();
+		Wypozyczalnia::displayRemoveFilm();
+	}
+	else {
+		std::cout << "Wprowadzono b³êdn¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+		displayRemoveFilm();
 	}
 }
 
-void Wypozyczalnia::removeCustomer() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+void Wypozyczalnia::displayRemoveCustomer() {
+	char action;	// Zmienna wyboru czynnosci uzytkownika
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -800,7 +873,7 @@ void Wypozyczalnia::removeCustomer() {
 	if (_number == "q") {
 		Wypozyczalnia::displayCustomersMenu();
 	}
-	else {
+	else if (isStringANumber(_number)) {
 		int number = std::stoi(_number);
 		int indexAll = 0;
 		int indexAvailable = 0;
@@ -814,6 +887,11 @@ void Wypozyczalnia::removeCustomer() {
 			}
 		}
 		Wypozyczalnia::saveCustomers();
-		Wypozyczalnia::removeCustomer();
+		Wypozyczalnia::displayRemoveCustomer();
+	}
+	else {
+		std::cout << "Wprowadzono b³êdn¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+		displayRemoveCustomer();
 	}
 }
