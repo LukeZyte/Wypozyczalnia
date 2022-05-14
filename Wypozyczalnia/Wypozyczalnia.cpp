@@ -380,7 +380,7 @@ void Wypozyczalnia::displayAllCustomers() {
 }
 
 void Wypozyczalnia::displayBorrowers() {
-	char action;	// Zmienna wyboru czynnosci uzytkownika
+	std::string pesel;
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -394,20 +394,48 @@ void Wypozyczalnia::displayBorrowers() {
 			index++;
 			std::cout << "\t" << index << ". ";
 			customer.showAllData();
+			std::cout << "\t " << "Wypo¿yczono filmów: " << customer.getNumOfFilms();
 			std::cout << std::endl;
 		}
 	}
 
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
-	std::cout << "PrzejdŸ do: ";
+	std::cout << "WprowadŸ pesel klienta, ¿eby podejrzeæ jego wypo¿yczone filmy: ";
 	
-	std::cin.get(action);
-	if (checkSelection(action)) {
-		switch (action) {
-		case 'q': Wypozyczalnia::displayCustomersMenu();
-			break;
-		default: Wypozyczalnia::displayBorrowers();
+	std::cin.clear();
+	std::getline(std::cin, pesel);
+
+	for (Klient customer : customers) {
+		if (customer.getNumOfFilms() > 0) {
+			if (customer.getPesel() == pesel) {
+				system("cls");
+				std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+				std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+				std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+				std::cout << std::endl;
+				std::cout << "Baza wypo¿yczonych filmów klienta: " << customer.getName() << " " << customer.getSurname() << std::endl << std::endl;
+				int index = 0;
+				for (WypozyczonyFilm borrowedFilm : borrowedFilms) {
+					if (borrowedFilm.getBorrowersPesel() == customer.getPesel()) {
+						index++;
+						std::cout << index << ". ";
+						borrowedFilm.showAllData();
+						std::cout << std::endl;
+					}
+				}
+				std::cout << std::endl;
+				system("PAUSE");
+				displayBorrowers();
+			}
 		}
+	}
+	if (pesel == "q") {
+		displayCustomersMenu();
+	}
+	else {
+		std::cout << "Wprowadzono nieprawid³owy pesel!" << std::endl;
+		system("PAUSE");
+		displayBorrowers();
 	}
 }
 
