@@ -9,6 +9,7 @@ class Wypozyczalnia {
 	std::vector <Klient> customers;
 	std::vector <WypozyczonyFilm> borrowedFilms;
 public:
+	bool areOnlySpaces(std::string stream);
 	bool isStringANumber(std::string stream);
 	Klient searchCustomer(std::string pesel);
 	Film searchFilm(std::string id);

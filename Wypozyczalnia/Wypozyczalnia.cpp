@@ -9,6 +9,15 @@
 #include <random>
 #include <ctime>
 
+bool Wypozyczalnia::areOnlySpaces(std::string stream) {
+	for (int i = 0; i < stream.size(); i++) {
+		if (stream[i] != ' ') {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool Wypozyczalnia::isStringANumber(std::string stream) {
 	for (int i = 0; i < stream.size(); i++) {
 		bool isCorrect = false;
@@ -515,11 +524,21 @@ void Wypozyczalnia::displayAddFilm() {
 	if (title == "q") {
 		Wypozyczalnia::displayFilmsMenu();
 	}
+	else if (areOnlySpaces(title) or title.size() == 0) {
+		std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+		displayAddFilm();
+	}
 	else {
 		std::cout << "\tWprowadŸ autora filmu: ";
 		std::getline(std::cin, author);
 		if (author == "q") {
 			Wypozyczalnia::displayFilmsMenu();
+		}
+		else if (areOnlySpaces(author) or author.size() == 0) {
+			std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+			system("PAUSE");
+			displayAddFilm();
 		}
 		else {
 			std::cout << "\tWprowadŸ gatunek filmu: ";
@@ -527,11 +546,21 @@ void Wypozyczalnia::displayAddFilm() {
 			if (genre == "q") {
 				Wypozyczalnia::displayFilmsMenu();
 			}
+			else if (areOnlySpaces(genre) or genre.size() == 0) {
+				std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+				system("PAUSE");
+				displayAddFilm();
+			}
 			else {
 				std::cout << "\tWprowadŸ cenê filmu: ";
 				std::cin >> _price;
 				if (_price == "q") {
 					Wypozyczalnia::displayFilmsMenu();
+				}
+				if (!isStringANumber(_price)) {
+					std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+					system("PAUSE");
+					displayAddFilm();
 				}
 				else {
 					double price = std::stod(_price);
@@ -555,10 +584,16 @@ void Wypozyczalnia::displayAddCustomer() {
 	std::cout << "Dodawanie nowego klienta" << std::endl;
 	std::cout << "[ q ] Anuluj wprowadzanie i wróæ" << std::endl << std::endl;
 	std::cout << "\tWprowadŸ pesel klienta: ";
+	std::cin.ignore();
 	std::getline(std::cin, pesel);
-	std::getline(std::cin, pesel);
+	
 	if (pesel == "q") {
 		Wypozyczalnia::displayCustomersMenu();
+	}
+	else if (!isStringANumber(pesel) or areOnlySpaces(pesel) or pesel.size() == 0 ) {
+		std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+		system("PAUSE");
+		displayAddCustomer();
 	}
 	else {
 		std::cout << "\tWprowadŸ imie klienta: ";
@@ -566,11 +601,21 @@ void Wypozyczalnia::displayAddCustomer() {
 		if (name == "q") {
 			Wypozyczalnia::displayCustomersMenu();
 		}
+		else if (isStringANumber(name) or areOnlySpaces(name) or name.size() == 0) {
+			std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+			system("PAUSE");
+			displayAddCustomer();
+		}
 		else {
 			std::cout << "\tWprowadŸ nazwisko klienta: ";
 			std::getline(std::cin, surname);
 			if (surname == "q") {
 				Wypozyczalnia::displayCustomersMenu();
+			}
+			else if (isStringANumber(surname) or areOnlySpaces(surname) or surname.size() == 0) {
+				std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+				system("PAUSE");
+				displayAddCustomer();
 			}
 			else {
 				std::cout << "\tWprowadŸ p³eæ klienta ( M / K ): ";
@@ -578,18 +623,33 @@ void Wypozyczalnia::displayAddCustomer() {
 				if (gender == "q") {
 					Wypozyczalnia::displayCustomersMenu();
 				}
+				if (gender != "K" and gender != "M") {
+					std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+					system("PAUSE");
+					displayAddCustomer();
+				}
 				else {
 					std::cout << "\tWprowadŸ wiek klienta: ";
-					std::getline(std::cin, _age);
-					int age = std::stoi(_age);
+					std::cin >> _age;
 					if (_age == "q") {
 						Wypozyczalnia::displayCustomersMenu();
 					}
+					if (!isStringANumber(_age)) {
+						std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+						system("PAUSE");
+						displayAddCustomer();
+					}
 					else {
+						int age = std::stoi(_age);
 						std::cout << "\tWprowadŸ miasto, z którego pochodzi klient: ";
 						std::getline(std::cin, city);
 						if (city == "q") {
 							Wypozyczalnia::displayCustomersMenu();
+						}
+						else if (isStringANumber(city) or areOnlySpaces(city) or city.size() == 0) {
+							std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
+							system("PAUSE");
+							displayAddCustomer();
 						}
 						else {
 							Klient klient(0, pesel, name, surname, gender, age, city);

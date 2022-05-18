@@ -3,7 +3,7 @@
 #include <string>
 
 void Film::showAllData() {
-	std::cout << "(id: " << id << ") " << title << " - " << author << "\t( " << genre << " )\t" << std::setprecision(2) << std::fixed << price << " PLN";
+	std::cout << "(id: " << id << ")\t " << title << " - " << author << "\t( " << genre << " )\t" << std::setprecision(2) << std::fixed << price << " PLN";
 }
 
 std::string Film::printToFile() {
