@@ -38,4 +38,7 @@ public:
 	void displayReturnFilm();
 	void displayRemoveFilm();
 	void displayRemoveCustomer();
+	void printAll();
+	void printCustomers();
+	void printFilms();
 };

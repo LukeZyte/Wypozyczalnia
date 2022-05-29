@@ -31,6 +31,9 @@ public:
 	std::string getPesel() { return pesel; }
 	std::string getName() { return name; }
 	std::string getSurname() { return surname; }
+	std::string getGender() { return gender; }
+	int getAge() { return age; }
+	std::string getCity() { return city; }
 	void setNumOfFilms(int _numOfFilms);
 	void incNumOfFilms();
 	void decNumOfFilms();

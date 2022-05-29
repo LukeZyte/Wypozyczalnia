@@ -1,0 +1,32 @@
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+-    WYPO¯YCZALNIA FILMÓW   -
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+BAZA DANYCH WSZYSTKICH FILMÓW I KLIENTÓW
+	Data wydruku: 29-05-2022
+
+WSZYSTKIE FILMY W BAZIE:
+
+(id: 1000) 	"Rok 1984" - George Orwell, 	cena: 30.000000 z³ 	[ WYPO¯YCZONO ]
+(id: 2000) 	"Hobbit" - Tolkien, 	cena: 50.000000 z³ 	[ WYPO¯YCZONO ]
+(id: 6000) 	"Spiaca Krolewna" - Disney, 	cena: 11.110000 z³ 	[ WYPO¯YCZONO ]
+(id: 206) 	"Shrek" - DreamWorks, 	cena: 39.990000 z³
+(id: 3793) 	"Fiona" - Disney, 	cena: 33.440000 z³
+(id: 7784) 	"Maly Ksiaze" - de Sampe, 	cena: 23.000000 z³
+(id: 7697) 	"Shrek 2" - Dreamworks, 	cena: 45.550000 z³ 	[ WYPO¯YCZONO ]
+
+Liczba filmów w bazie danych: 7
+Liczba wypo¿yczonych filmów w bazie danych: 4
+Liczba dostêpnych filmów w magazynie: 3
+
+WSZYSCY KLIENCI W BAZIE:
+
+(pesel: 100) 	Kacper MoskaÅ‚a, 	p³eæ: M, wiek: 20, 	miejscowoœæ: Zabrze, 	[ D£U¯NIK ]
+(pesel: 300) 	Aleksander Foberowy, 	p³eæ: M, wiek: 18, 	miejscowoœæ: Cieszyn
+(pesel: 400) 	Aleksandra Sobczak, 	p³eæ: K, wiek: 15, 	miejscowoœæ: Katowice
+(pesel: 123345) 	Lukasz Jarzab, 	p³eæ: M, wiek: 21, 	miejscowoœæ: Cieszyn, 	[ D£U¯NIK ]
+
+Liczba klientów w bazie danych: 4
+Liczba klientów p³ci mêskiej w bazie danych: 3
+Liczba klientów p³ci ¿eñskiej w bazie danych: 1
+Liczba klientów, którzy wypo¿yczyli co najmniej jeden film: 2

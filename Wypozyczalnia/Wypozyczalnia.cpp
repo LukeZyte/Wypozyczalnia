@@ -21,10 +21,14 @@ bool Wypozyczalnia::areOnlySpaces(std::string stream) {
 bool Wypozyczalnia::isStringANumber(std::string stream) {
 	for (int i = 0; i < stream.size(); i++) {
 		bool isCorrect = false;
-		if (stream[i] == '0' or stream[i] == '1' or stream[i] == '2' or stream[i] == '3' or stream[i] == '4' or stream[i] == '5' or stream[i] == '6' or stream[i] == '7' or stream[i] == '8' or stream[i] == '9') {
+		int countDots = 0;
+		if (stream[i] == '.') {
+			countDots++;
+		}
+		if (stream[i] == '0' or stream[i] == '1' or stream[i] == '2' or stream[i] == '3' or stream[i] == '4' or stream[i] == '5' or stream[i] == '6' or stream[i] == '7' or stream[i] == '8' or stream[i] == '9' or stream[i] == '.') {
 			isCorrect = true;
 		}
-		if (!isCorrect) {
+		if (!isCorrect and countDots < 2) {
 			return false;
 		}
 	}
@@ -59,41 +63,6 @@ Film Wypozyczalnia::searchFilm(std::string id) {
 	system("PAUSE");
 	displayFilmsMenu();
 }
-
-/*
-void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c), void(*d), void(*e), void(*f), void(*g), void(*h), void(*i), void(*j)) {
-	char action = _action[0];
-	switch (action) {
-	case 'q': if (&a) {
-		&a;
-	}
-			else {
-		&def;
-	}
-		break;
-	case '1': &b;
-		break;
-	case '2': &c;
-		break;
-	case '3': &d;
-		break;
-	case '4': &e;
-		break;
-	case '5': &f;
-		break;
-	case '6': &g;
-		break;
-	case '7': &h;
-		break;
-	case '8': &i;
-		break;
-	case '9': &j;
-		break;
-	default: std::cout << "Proszê wprowadziæ poprawn¹ œcie¿kê!" << std::endl;
-		break;
-	}
-}
-*/
 
 void Wypozyczalnia::loadFilms() {
 	std::fstream fileFilms("database/Filmy.txt");
@@ -323,13 +292,32 @@ void Wypozyczalnia::displayCustomersMenu() {
 }
 
 void Wypozyczalnia::displayPrintMenu() {
-	char action = NULL;	// Zmienna wyboru czynnosci uzytkownika
+	char action;
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << std::endl;
-	std::cout << "Tutaj bedzie baza drukowania...";
+	std::cout << "Drukowanie";
+	std::cout << "\t[ 1 ] Drukuj ca³¹ bazê danych" << std::endl;
+	std::cout << "\t[ 2 ] Drukuj bazê klientów" << std::endl;
+	std::cout << "\t[ 3 ] Drukuj bazê filmów" << std::endl;
+	std::cout << "\t[ q ] Wróæ" << std::endl;
+	std::cout << "PrzejdŸ do: ";
+	std::cin.get(action);
+	if (checkSelection(action)) {
+		switch (action) {
+		case 'q': Wypozyczalnia::displayMenu();
+			break;
+		case '1': Wypozyczalnia::printAll();
+			break;
+		case '2': Wypozyczalnia::printCustomers();
+			break;
+		case '3': Wypozyczalnia::printFilms();
+			break;
+		default: displayPrintMenu();
+		}
+	}
 }
 
 void Wypozyczalnia::displayAllFilms() {
@@ -426,6 +414,7 @@ void Wypozyczalnia::displayBorrowers() {
 				int index = 0;
 				for (WypozyczonyFilm borrowedFilm : borrowedFilms) {
 					if (borrowedFilm.getBorrowersPesel() == customer.getPesel()) {
+						std::cout << "\t";
 						index++;
 						std::cout << index << ". ";
 						borrowedFilm.showAllData();
@@ -630,7 +619,7 @@ void Wypozyczalnia::displayAddCustomer() {
 				}
 				else {
 					std::cout << "\tWprowadŸ wiek klienta: ";
-					std::cin >> _age;
+					std::getline(std::cin, _age);
 					if (_age == "q") {
 						Wypozyczalnia::displayCustomersMenu();
 					}
@@ -739,6 +728,9 @@ void Wypozyczalnia::displayBorrowFilm() {
 	std::cout << "Wybierz numer filmu, który chcesz wypo¿yczyæ: ";
 	std::cin >> _number;
 	
+	if (_number == "q") {
+		Wypozyczalnia::displayFilmsMenu();
+	}
 	if (_number != "q" and isStringANumber(_number)) {
 		number = std::stoi(_number);
 	}
@@ -747,10 +739,8 @@ void Wypozyczalnia::displayBorrowFilm() {
 		system("PAUSE");
 		displayBorrowFilm();
 	}
-	if (_number == "q") {
-		Wypozyczalnia::displayFilmsMenu();
-	}
-	else if (number > 0 and number <= index) {
+	
+	if (number > 0 and number <= index) {
 		index = 0;
 		for (int i = 0; i < films.size(); i++) {
 			if (films[i].getAvailable()) {
@@ -773,6 +763,9 @@ void Wypozyczalnia::displayBorrowFilm() {
 		std::cout << std::endl;
 		std::cout << "WprowadŸ pesel osoby po¿yczaj¹cej: ";
 		std::cin >> pesel;
+		if (pesel == "q") {
+			displayFilmsMenu();
+		}
 		Klient actualCustomer = searchCustomer(pesel);
 		
 		if (actualCustomer.getPesel() == pesel) {
@@ -982,4 +975,163 @@ void Wypozyczalnia::displayRemoveCustomer() {
 		system("PAUSE");
 		displayRemoveCustomer();
 	}
+}
+
+void Wypozyczalnia::printAll() {
+	std::ofstream fileInput("database/BazaDanych_wydruk.txt");
+
+	fileInput << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	fileInput << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	fileInput << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl << std::endl;
+	fileInput << "BAZA DANYCH WSZYSTKICH FILMÓW I KLIENTÓW" << std::endl;
+	fileInput << "\tData wydruku: " << currentDate() << std::endl << std::endl;
+	fileInput << "WSZYSTKIE FILMY W BAZIE:" << std::endl << std::endl;
+	int numberAll = 0;
+	int numBorrowed = 0;
+
+	std::string stream;
+
+	if (films.size() == 0) {
+		fileInput << "Brak filmów w bazie danych" << std::endl << std::endl;
+	}
+	else {
+
+		for (Film actualFilm : films) {
+			numberAll++;
+			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + ", \tcena: " + std::to_string(actualFilm.getPrice()) + " z³";
+			if (actualFilm.getAvailable()) {
+				numBorrowed++;
+				stream += " \t[ WYPO¯YCZONO ]";
+			}
+			stream += "\n";
+			fileInput << stream;
+		}
+
+		fileInput << std::endl;
+		fileInput << "Liczba filmów w bazie danych: " << numberAll << std::endl;
+		fileInput << "Liczba wypo¿yczonych filmów w bazie danych: " << numBorrowed << std::endl;
+		fileInput << "Liczba dostêpnych filmów w magazynie: " << numberAll - numBorrowed << std::endl << std::endl;
+	}
+
+	fileInput << "WSZYSCY KLIENCI W BAZIE:" << std::endl << std::endl;
+	int numMen = 0;
+	numberAll = 0;
+	numBorrowed = 0;
+	stream = "";
+
+	if (customers.size() == 0) {
+		fileInput << "Brak klientów w bazie danych" << std::endl << std::endl;
+	}
+	else {
+
+		for (Klient actualCustomer : customers) {
+			numberAll++;
+			stream = "(pesel: " + actualCustomer.getPesel() + ") \t" + actualCustomer.getName() + " " + actualCustomer.getSurname() + ", \tp³eæ: " + actualCustomer.getGender() + ", wiek: " + std::to_string(actualCustomer.getAge()) + ", \tmiejscowoœæ: " + actualCustomer.getCity();
+			if (actualCustomer.getGender() == "M") {
+				numMen++;
+			}
+			if (actualCustomer.getNumOfFilms() > 0) {
+				numBorrowed++;
+				stream += ", \t[ D£U¯NIK ]";
+			}
+			stream += "\n";
+			fileInput << stream;
+		}
+
+		fileInput << std::endl;
+		fileInput << "Liczba klientów w bazie danych: " << numberAll << std::endl;
+		fileInput << "Liczba klientów p³ci mêskiej w bazie danych: " << numMen << std::endl;
+		fileInput << "Liczba klientów p³ci ¿eñskiej w bazie danych: " << numberAll - numMen << std::endl;
+		fileInput << "Liczba klientów, którzy wypo¿yczyli co najmniej jeden film: " << numBorrowed << std::endl;
+	}
+	fileInput.close();
+	std::cout << "PLIK DO WYDRUKU JEST GOTOWY (.../database/BazaDanych_wydruk.txt)\n";
+	system("PAUSE");
+	displayPrintMenu();
+}
+
+void Wypozyczalnia::printCustomers() {
+	std::ofstream fileInput("database/BazaKlientow_wydruk.txt");
+
+	fileInput << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	fileInput << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	fileInput << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl << std::endl;
+	fileInput << "BAZA DANYCH WSZYSTKICH FILMÓW I KLIENTÓW" << std::endl;
+	fileInput << "\tData wydruku: " << currentDate() << std::endl << std::endl;
+	fileInput << "WSZYSCY KLIENCI W BAZIE:" << std::endl << std::endl;
+	int numberAll = 0;
+	int numBorrowed = 0;
+	int numMen = 0;
+	std::string stream;
+
+	if (customers.size() == 0) {
+		fileInput << "Brak klientów w bazie danych" << std::endl << std::endl;
+	}
+	else {
+
+		for (Klient actualCustomer : customers) {
+			numberAll++;
+			stream = "(pesel: " + actualCustomer.getPesel() + ") \t" + actualCustomer.getName() + " " + actualCustomer.getSurname() + ", \tp³eæ: " + actualCustomer.getGender() + ", wiek: " + std::to_string(actualCustomer.getAge()) + ", \tmiejscowoœæ: " + actualCustomer.getCity();
+			if (actualCustomer.getGender() == "M") {
+				numMen++;
+			}
+			if (actualCustomer.getNumOfFilms() > 0) {
+				numBorrowed++;
+				stream += ", \t[ D£U¯NIK ]";
+			}
+			stream += "\n";
+			fileInput << stream;
+		}
+
+		fileInput << std::endl;
+		fileInput << "Liczba klientów w bazie danych: " << numberAll << std::endl;
+		fileInput << "Liczba klientów p³ci mêskiej w bazie danych: " << numMen << std::endl;
+		fileInput << "Liczba klientów p³ci ¿eñskiej w bazie danych: " << numberAll - numMen << std::endl;
+		fileInput << "Liczba klientów, którzy wypo¿yczyli co najmniej jeden film: " << numBorrowed << std::endl;
+	}
+	fileInput.close();
+	std::cout << "PLIK DO WYDRUKU JEST GOTOWY (.../database/BazaKlientow_wydruk.txt)\n";
+	system("PAUSE");
+	displayPrintMenu();
+}
+
+void Wypozyczalnia::printFilms() {
+	std::ofstream fileInput("database/BazaFilmow_wydruk.txt");
+
+	fileInput << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+	fileInput << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
+	fileInput << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl << std::endl;
+	fileInput << "BAZA DANYCH WSZYSTKICH FILMÓW" << std::endl;
+	fileInput << "\tData wydruku: " << currentDate() << std::endl << std::endl;
+	fileInput << "WSZYSTKIE FILMY W BAZIE:" << std::endl << std::endl;
+	int numberAll = 0;
+	int numBorrowed = 0;
+
+	std::string stream;
+
+	if (films.size() == 0) {
+		fileInput << "Brak filmów w bazie danych" << std::endl << std::endl;
+	}
+	else {
+
+		for (Film actualFilm : films) {
+			numberAll++;
+			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + ", \tcena: " + std::to_string(actualFilm.getPrice()) + " z³";
+			if (actualFilm.getAvailable()) {
+				numBorrowed++;
+				stream += " \t[ WYPO¯YCZONO ]";
+			}
+			stream += "\n";
+			fileInput << stream;
+		}
+
+		fileInput << std::endl;
+		fileInput << "Liczba filmów w bazie danych: " << numberAll << std::endl;
+		fileInput << "Liczba wypo¿yczonych filmów w bazie danych: " << numBorrowed << std::endl;
+		fileInput << "Liczba dostêpnych filmów w magazynie: " << numberAll - numBorrowed << std::endl << std::endl;
+	}
+	fileInput.close();
+	std::cout << "PLIK DO WYDRUKU JEST GOTOWY (.../database/BazaFilmow_wydruk.txt)\n";
+	system("PAUSE");
+	displayPrintMenu();
 }
