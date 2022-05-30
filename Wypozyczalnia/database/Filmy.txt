@@ -1,7 +1,2 @@
-1000	true	Rok 1984	George Orwell	Fikcja polityczna	30.000000
-2000	true	Hobbit	Tolkien	Fantasy	50.000000
-6000	true	Spiaca Krolewna	Disney	bajka	11.110000
-206	false	Shrek	DreamWorks	przygodowe	39.990000
-3793	false	Fiona	Disney	przygoda	33.440000
-7784	false	Maly Ksiaze	de Sampe	przygodowe	23.000000
-7697	true	Shrek 2	Dreamworks	familijne	45.550000
+7283	true	Shrek	dreamworks	przygodowy	1.110000
+8233	false	Shrek 2	dreamworks	przygodowy	2.220000

@@ -1,3 +1,1 @@
-206	false	Shrek	DreamWorks	przygodowe	39.990000	100	10.10.1010
-3793	false	Fiona	Disney	przygoda	33.440000	100	14-05-2022
-7784	false	Maly Ksiaze	de Sampe	przygodowe	23.000000	123345	29-05-2022
+8233	false	Shrek 2	dreamworks	przygodowy	2.220000	123	30-05-2022

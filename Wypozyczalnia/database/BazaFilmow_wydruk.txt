@@ -3,19 +3,14 @@
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 BAZA DANYCH WSZYSTKICH FILMÓW
-	Data wydruku: 29-05-2022
+	Data wydruku: 30-05-2022
 
 WSZYSTKIE FILMY W BAZIE:
 
-(id: 1000) 	"Rok 1984" - George Orwell, 	cena: 30.000000 z³ 	[ WYPO¯YCZONO ]
-(id: 2000) 	"Hobbit" - Tolkien, 	cena: 50.000000 z³ 	[ WYPO¯YCZONO ]
-(id: 6000) 	"Spiaca Krolewna" - Disney, 	cena: 11.110000 z³ 	[ WYPO¯YCZONO ]
-(id: 206) 	"Shrek" - DreamWorks, 	cena: 39.990000 z³
-(id: 3793) 	"Fiona" - Disney, 	cena: 33.440000 z³
-(id: 7784) 	"Maly Ksiaze" - de Sampe, 	cena: 23.000000 z³
-(id: 7697) 	"Shrek 2" - Dreamworks, 	cena: 45.550000 z³ 	[ WYPO¯YCZONO ]
+(id: 7283) 	"Shrek" - dreamworks, 	cena: 1.110000 z³
+(id: 8233) 	"Shrek 2" - dreamworks, 	cena: 2.220000 z³ 	[ WYPO¯YCZONO ]
 
-Liczba filmów w bazie danych: 7
-Liczba wypo¿yczonych filmów w bazie danych: 4
-Liczba dostêpnych filmów w magazynie: 3
+Liczba filmów w bazie danych: 2
+Liczba wypo¿yczonych filmów w bazie danych: 1
+Liczba dostêpnych filmów w magazynie: 1
 

@@ -399,8 +399,9 @@ void Wypozyczalnia::displayBorrowers() {
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "WprowadŸ pesel klienta, ¿eby podejrzeæ jego wypo¿yczone filmy: ";
 	
-	std::cin.clear();
-	std::getline(std::cin, pesel);
+	//std::cin.clear();
+	//std::getline(std::cin, pesel);
+	std::cin >> pesel;
 
 	for (Klient customer : customers) {
 		if (customer.getNumOfFilms() > 0) {
@@ -840,7 +841,7 @@ void Wypozyczalnia::displayReturnFilm() {
 	if (action != "q" and isStringANumber(action)) {
 		number = std::stoi(action);
 	}
-	else {
+	else if (action != "q") {
 		std::cout << "Wprowadzono b³êdn¹ wartoœæ!" << std::endl;
 		system("PAUSE");
 	}
@@ -999,7 +1000,7 @@ void Wypozyczalnia::printAll() {
 		for (Film actualFilm : films) {
 			numberAll++;
 			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + ", \tcena: " + std::to_string(actualFilm.getPrice()) + " z³";
-			if (actualFilm.getAvailable()) {
+			if (!actualFilm.getAvailable()) {
 				numBorrowed++;
 				stream += " \t[ WYPO¯YCZONO ]";
 			}
@@ -1117,7 +1118,7 @@ void Wypozyczalnia::printFilms() {
 		for (Film actualFilm : films) {
 			numberAll++;
 			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + ", \tcena: " + std::to_string(actualFilm.getPrice()) + " z³";
-			if (actualFilm.getAvailable()) {
+			if (!actualFilm.getAvailable()) {
 				numBorrowed++;
 				stream += " \t[ WYPO¯YCZONO ]";
 			}
