@@ -36,10 +36,10 @@ bool Wypozyczalnia::isStringANumber(std::string stream) {
 }
 
 void Wypozyczalnia::initializeData() {
-	Wypozyczalnia::loadFilms();
-	Wypozyczalnia::loadCustomers();
-	Wypozyczalnia::loadBorrowedFilms();
-	Wypozyczalnia::displayMenu();
+	loadFilms();
+	loadCustomers();
+	loadBorrowedFilms();
+	displayMenu();
 }
 
 Klient Wypozyczalnia::searchCustomer(std::string pesel) {
@@ -200,13 +200,13 @@ void Wypozyczalnia::displayMenu() {
 		switch (action) {
 		case 'q': exit(0);
 			break;
-		case '1': Wypozyczalnia::displayFilmsMenu();
+		case '1': displayFilmsMenu();
 			break;
-		case '2': Wypozyczalnia::displayCustomersMenu();
+		case '2': displayCustomersMenu();
 			break;
-		case '3': Wypozyczalnia::displayPrintMenu();
+		case '3': displayPrintMenu();
 			break;
-		default: Wypozyczalnia::displayMenu();
+		default: displayMenu();
 		}
 	}
 	else {
@@ -235,23 +235,23 @@ void Wypozyczalnia::displayFilmsMenu() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayMenu();
+		case 'q': displayMenu();
 			break;
-		case '1': Wypozyczalnia::displayAllFilms();
+		case '1': displayAllFilms();
 			break;
-		case '2': Wypozyczalnia::displayAllBorrowedFilms();
+		case '2': displayAllBorrowedFilms();
 			break;
-		case '3': Wypozyczalnia::displayAvailableFilms();
+		case '3': displayAvailableFilms();
 			break;
-		case '4': Wypozyczalnia::displayBorrowFilm();
+		case '4': displayBorrowFilm();
 			break;
-		case '5': Wypozyczalnia::displayReturnFilm();
+		case '5': displayReturnFilm();
 			break;
-		case '6': Wypozyczalnia::displayAddFilm();
+		case '6': displayAddFilm();
 			break;
-		case '7': Wypozyczalnia::displayRemoveFilm();
+		case '7': displayRemoveFilm();
 			break;
-		default: Wypozyczalnia::displayFilmsMenu();
+		default: displayFilmsMenu();
 		}
 	}
 }
@@ -274,15 +274,15 @@ void Wypozyczalnia::displayCustomersMenu() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayMenu();
+		case 'q': displayMenu();
 			break;
-		case '1': Wypozyczalnia::displayAllCustomers();
+		case '1': displayAllCustomers();
 			break;
-		case '2': Wypozyczalnia::displayBorrowers();
+		case '2': displayBorrowers();
 			break;
-		case '3': Wypozyczalnia::displayAddCustomer();
+		case '3': displayAddCustomer();
 			break;
-		case '4': Wypozyczalnia::displayRemoveCustomer();
+		case '4': displayRemoveCustomer();
 			break;
 		default: displayCustomersMenu();
 		}
@@ -305,13 +305,13 @@ void Wypozyczalnia::displayPrintMenu() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayMenu();
+		case 'q': displayMenu();
 			break;
-		case '1': Wypozyczalnia::printAll();
+		case '1': printAll();
 			break;
-		case '2': Wypozyczalnia::printCustomers();
+		case '2': printCustomers();
 			break;
-		case '3': Wypozyczalnia::printFilms();
+		case '3': printFilms();
 			break;
 		default: displayPrintMenu();
 		}
@@ -339,9 +339,9 @@ void Wypozyczalnia::displayAllFilms() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayFilmsMenu();
+		case 'q': displayFilmsMenu();
 			break;
-		default: Wypozyczalnia::displayAllFilms();
+		default: displayAllFilms();
 		}
 	}
 }
@@ -367,9 +367,9 @@ void Wypozyczalnia::displayAllCustomers() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayCustomersMenu();
+		case 'q': displayCustomersMenu();
 			break;
-		default: Wypozyczalnia::displayAllCustomers();
+		default: displayAllCustomers();
 		}
 	}
 }
@@ -460,9 +460,9 @@ void Wypozyczalnia::displayAvailableFilms() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayFilmsMenu();
+		case 'q': displayFilmsMenu();
 			break;
-		default: Wypozyczalnia::displayAvailableFilms();
+		default: displayAvailableFilms();
 		}
 	}
 }
@@ -510,7 +510,7 @@ void Wypozyczalnia::displayAddFilm() {
 	std::cin.ignore();
 	std::getline(std::cin, title);
 	if (title == "q") {
-		Wypozyczalnia::displayFilmsMenu();
+		displayFilmsMenu();
 	}
 	else if (areOnlySpaces(title) or title.size() == 0) {
 		std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -522,7 +522,7 @@ void Wypozyczalnia::displayAddFilm() {
 		std::cin.ignore();
 		std::getline(std::cin, author);
 		if (author == "q") {
-			Wypozyczalnia::displayFilmsMenu();
+			displayFilmsMenu();
 		}
 		else if (areOnlySpaces(author) or author.size() == 0) {
 			std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -534,7 +534,7 @@ void Wypozyczalnia::displayAddFilm() {
 			std::cin.ignore();
 			std::getline(std::cin, genre);
 			if (genre == "q") {
-				Wypozyczalnia::displayFilmsMenu();
+				displayFilmsMenu();
 			}
 			else if (areOnlySpaces(genre) or genre.size() == 0) {
 				std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -545,7 +545,7 @@ void Wypozyczalnia::displayAddFilm() {
 				std::cout << "\tWprowadŸ cenê filmu: ";
 				std::cin >> _price;
 				if (_price == "q") {
-					Wypozyczalnia::displayFilmsMenu();
+					displayFilmsMenu();
 				}
 				if (!isStringANumber(_price)) {
 					std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -555,9 +555,9 @@ void Wypozyczalnia::displayAddFilm() {
 				else {
 					double price = std::stod(_price);
 					Film film(id, true, title, author, genre, price);
-					Wypozyczalnia::films.push_back(film);
-					Wypozyczalnia::saveFilms();
-					Wypozyczalnia::displayFilmsMenu();
+					films.push_back(film);
+					saveFilms();
+					displayFilmsMenu();
 				}
 			}
 		}
@@ -578,7 +578,7 @@ void Wypozyczalnia::displayAddCustomer() {
 	std::getline(std::cin, pesel);
 	
 	if (pesel == "q") {
-		Wypozyczalnia::displayCustomersMenu();
+		displayCustomersMenu();
 	}
 	else if (!isStringANumber(pesel) or areOnlySpaces(pesel) or pesel.size() == 0 ) {
 		std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -590,7 +590,7 @@ void Wypozyczalnia::displayAddCustomer() {
 		std::cin.ignore();
 		std::getline(std::cin, name);
 		if (name == "q") {
-			Wypozyczalnia::displayCustomersMenu();
+			displayCustomersMenu();
 		}
 		else if (isStringANumber(name) or areOnlySpaces(name) or name.size() == 0) {
 			std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -602,7 +602,7 @@ void Wypozyczalnia::displayAddCustomer() {
 			std::cin.ignore();
 			std::getline(std::cin, surname);
 			if (surname == "q") {
-				Wypozyczalnia::displayCustomersMenu();
+				displayCustomersMenu();
 			}
 			else if (isStringANumber(surname) or areOnlySpaces(surname) or surname.size() == 0) {
 				std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -614,7 +614,7 @@ void Wypozyczalnia::displayAddCustomer() {
 				std::cin.ignore();
 				std::getline(std::cin, gender);
 				if (gender == "q") {
-					Wypozyczalnia::displayCustomersMenu();
+					displayCustomersMenu();
 				}
 				if (gender != "K" and gender != "M") {
 					std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -626,7 +626,7 @@ void Wypozyczalnia::displayAddCustomer() {
 					std::cin.ignore();
 					std::getline(std::cin, _age);
 					if (_age == "q") {
-						Wypozyczalnia::displayCustomersMenu();
+						displayCustomersMenu();
 					}
 					if (!isStringANumber(_age)) {
 						std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -639,7 +639,7 @@ void Wypozyczalnia::displayAddCustomer() {
 						std::cin.ignore();
 						std::getline(std::cin, city);
 						if (city == "q") {
-							Wypozyczalnia::displayCustomersMenu();
+							displayCustomersMenu();
 						}
 						else if (isStringANumber(city) or areOnlySpaces(city) or city.size() == 0) {
 							std::cout << "Wprowadzono nieprawid³ow¹ wartoœæ!" << std::endl;
@@ -648,9 +648,9 @@ void Wypozyczalnia::displayAddCustomer() {
 						}
 						else {
 							Klient klient(0, pesel, name, surname, gender, age, city);
-							Wypozyczalnia::customers.push_back(klient);
-							Wypozyczalnia::saveCustomers();
-							Wypozyczalnia::displayCustomersMenu();
+							customers.push_back(klient);
+							saveCustomers();
+							displayCustomersMenu();
 						}
 					}
 				}
@@ -684,9 +684,9 @@ void Wypozyczalnia::displayAllBorrowedFilms() {
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
-		case 'q': Wypozyczalnia::displayFilmsMenu();
+		case 'q': displayFilmsMenu();
 			break;
-		default: Wypozyczalnia::displayAllBorrowedFilms();
+		default: displayAllBorrowedFilms();
 		}
 	}
 }
@@ -735,7 +735,7 @@ void Wypozyczalnia::displayBorrowFilm() {
 	std::cin >> _number;
 	
 	if (_number == "q") {
-		Wypozyczalnia::displayFilmsMenu();
+		displayFilmsMenu();
 	}
 	if (_number != "q" and isStringANumber(_number)) {
 		number = std::stoi(_number);
@@ -877,13 +877,13 @@ void Wypozyczalnia::displayReturnFilm() {
 	}
 	
 	switch (action[0]) {
-	case 'q': Wypozyczalnia::displayFilmsMenu();
+	case 'q': displayFilmsMenu();
 		break;
 	default: {
 		if (wrongNumber) {
 			std::cout << "Wprowadzono wartoœæ spoza listy!" << std::endl;
 			system("PAUSE");
-			Wypozyczalnia::displayReturnFilm();
+			displayReturnFilm();
 		}
 	}
 	}
@@ -913,7 +913,7 @@ void Wypozyczalnia::displayRemoveFilm() {
 	std::cout << std::endl << "Wybierz numer filmu, który chcesz usun¹æ: ";
 	std::cin >> _number;
 	if (_number == "q") {
-		Wypozyczalnia::displayFilmsMenu();
+		displayFilmsMenu();
 	}
 	else if (isStringANumber(_number)) {
 		int number = std::stoi(_number);
@@ -928,8 +928,8 @@ void Wypozyczalnia::displayRemoveFilm() {
 				}
 			}
 		}
-		Wypozyczalnia::saveFilms();
-		Wypozyczalnia::displayRemoveFilm();
+		saveFilms();
+		displayRemoveFilm();
 	}
 	else {
 		std::cout << "Wprowadzono b³êdn¹ wartoœæ!" << std::endl;
@@ -963,7 +963,7 @@ void Wypozyczalnia::displayRemoveCustomer() {
 	std::cout << std::endl << "Wybierz numer klienta, którego chcesz usun¹æ z bazy: ";
 	std::cin >> _number;
 	if (_number == "q") {
-		Wypozyczalnia::displayCustomersMenu();
+		displayCustomersMenu();
 	}
 	else if (isStringANumber(_number)) {
 		int number = std::stoi(_number);
@@ -974,12 +974,12 @@ void Wypozyczalnia::displayRemoveCustomer() {
 			if (customers[i].getNumOfFilms() == 0) {
 				indexAvailable++;
 				if (indexAvailable == number) {
-					Wypozyczalnia::customers.erase(customers.begin() + indexAll - 1);
+					customers.erase(customers.begin() + indexAll - 1);
 				}
 			}
 		}
-		Wypozyczalnia::saveCustomers();
-		Wypozyczalnia::displayRemoveCustomer();
+		saveCustomers();
+		displayRemoveCustomer();
 	}
 	else {
 		std::cout << "Wprowadzono b³êdn¹ wartoœæ!" << std::endl;
