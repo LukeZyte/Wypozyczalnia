@@ -182,7 +182,6 @@ bool Wypozyczalnia::checkSelection(char stream) {
 
 void Wypozyczalnia::displayMenu() {
 	char action;	// Zmienna wyboru czynnosci uzytkownika
-	//std::string action = "1";
 	system("cls");
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
@@ -196,7 +195,6 @@ void Wypozyczalnia::displayMenu() {
 	std::cout << "WprowadŸ cyfrê interesuj¹cej Ciê czynnoœci, aby przejœæ dalej." << std::endl;
 	std::cout << "PrzejdŸ do: ";
 
-	//std::cin.clear();
 	std::cin.get(action);
 	if (checkSelection(action)) {
 		switch (action) {
@@ -399,7 +397,7 @@ void Wypozyczalnia::displayBorrowers() {
 	std::cout << std::endl << "[ q ] Wróæ" << std::endl;
 	std::cout << "WprowadŸ pesel klienta, ¿eby podejrzeæ jego wypo¿yczone filmy: ";
 	
-	//std::cin.clear();
+	//std::cin.ignore();
 	//std::getline(std::cin, pesel);
 	std::cin >> pesel;
 
@@ -509,7 +507,7 @@ void Wypozyczalnia::displayAddFilm() {
 	} while (duped);
 
 	std::cout << "\tWprowadŸ tytu³ filmu: ";
-	std::getline(std::cin, title);
+	std::cin.ignore();
 	std::getline(std::cin, title);
 	if (title == "q") {
 		Wypozyczalnia::displayFilmsMenu();
@@ -521,6 +519,7 @@ void Wypozyczalnia::displayAddFilm() {
 	}
 	else {
 		std::cout << "\tWprowadŸ autora filmu: ";
+		std::cin.ignore();
 		std::getline(std::cin, author);
 		if (author == "q") {
 			Wypozyczalnia::displayFilmsMenu();
@@ -532,6 +531,7 @@ void Wypozyczalnia::displayAddFilm() {
 		}
 		else {
 			std::cout << "\tWprowadŸ gatunek filmu: ";
+			std::cin.ignore();
 			std::getline(std::cin, genre);
 			if (genre == "q") {
 				Wypozyczalnia::displayFilmsMenu();
@@ -587,6 +587,7 @@ void Wypozyczalnia::displayAddCustomer() {
 	}
 	else {
 		std::cout << "\tWprowadŸ imie klienta: ";
+		std::cin.ignore();
 		std::getline(std::cin, name);
 		if (name == "q") {
 			Wypozyczalnia::displayCustomersMenu();
@@ -598,6 +599,7 @@ void Wypozyczalnia::displayAddCustomer() {
 		}
 		else {
 			std::cout << "\tWprowadŸ nazwisko klienta: ";
+			std::cin.ignore();
 			std::getline(std::cin, surname);
 			if (surname == "q") {
 				Wypozyczalnia::displayCustomersMenu();
@@ -609,6 +611,7 @@ void Wypozyczalnia::displayAddCustomer() {
 			}
 			else {
 				std::cout << "\tWprowadŸ p³eæ klienta ( M / K ): ";
+				std::cin.ignore();
 				std::getline(std::cin, gender);
 				if (gender == "q") {
 					Wypozyczalnia::displayCustomersMenu();
@@ -620,6 +623,7 @@ void Wypozyczalnia::displayAddCustomer() {
 				}
 				else {
 					std::cout << "\tWprowadŸ wiek klienta: ";
+					std::cin.ignore();
 					std::getline(std::cin, _age);
 					if (_age == "q") {
 						Wypozyczalnia::displayCustomersMenu();
@@ -632,6 +636,7 @@ void Wypozyczalnia::displayAddCustomer() {
 					else {
 						int age = std::stoi(_age);
 						std::cout << "\tWprowadŸ miasto, z którego pochodzi klient: ";
+						std::cin.ignore();
 						std::getline(std::cin, city);
 						if (city == "q") {
 							Wypozyczalnia::displayCustomersMenu();
@@ -838,6 +843,7 @@ void Wypozyczalnia::displayReturnFilm() {
 
 	std::cin >> action;
 	int number = 0;
+	bool wrongNumber = true;
 	if (action != "q" and isStringANumber(action)) {
 		number = std::stoi(action);
 	}
@@ -846,6 +852,7 @@ void Wypozyczalnia::displayReturnFilm() {
 		system("PAUSE");
 	}
 	if (number > 0 and number <= borrowedFilms.size()) {
+		wrongNumber = false;
 		// zmiana dostepnosci filmu
 		for (int i = 0; i < films.size(); i++) {
 			if (films[i].getId() == borrowedFilms[number - 1].getId()) {
@@ -866,16 +873,19 @@ void Wypozyczalnia::displayReturnFilm() {
 		saveBorrowedFilms();
 		saveFilms();
 		saveCustomers();
+		displayReturnFilm();
 	}
 	
 	switch (action[0]) {
 	case 'q': Wypozyczalnia::displayFilmsMenu();
 		break;
 	default: {
-		std::cout << "Wprowadzono wartoœæ spoza listy!" << std::endl;
-		system("PAUSE");
-		Wypozyczalnia::displayReturnFilm();
+		if (wrongNumber) {
+			std::cout << "Wprowadzono wartoœæ spoza listy!" << std::endl;
+			system("PAUSE");
+			Wypozyczalnia::displayReturnFilm();
 		}
+	}
 	}
 }
 
