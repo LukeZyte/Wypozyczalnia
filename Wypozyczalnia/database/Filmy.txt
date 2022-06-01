@@ -1,2 +1,2 @@
-7283	true	Shrek	dreamworks	przygodowy	1.110000
-8233	true	Shrek 2	dreamworks	przygodowy	2.220000
+1119	true	tak	srak	ak	44.27
+4352	true	lol	lol	lol	44.66

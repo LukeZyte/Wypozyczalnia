@@ -3,11 +3,11 @@
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 BAZA DANYCH WSZYSTKICH FILMÓW I KLIENTÓW
-	Data wydruku: 30-05-2022
+	Data wydruku: 01-06-2022
 
 WSZYSCY KLIENCI W BAZIE:
 
-(pesel: 123) 	Kacper Moskala, 	p³eæ: M, wiek: 21, 	miejscowoœæ: Cieszyn, 	[ D£U¯NIK ]
+(pesel: 123456789) 	lol mol, 	p³eæ: M, wiek: 44, 	miejscowoœæ: tak, 	[ D£U¯NIK ( 1 ) ]
 
 Liczba klientów w bazie danych: 1
 Liczba klientów p³ci mêskiej w bazie danych: 1

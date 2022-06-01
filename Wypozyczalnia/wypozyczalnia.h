@@ -14,7 +14,6 @@ public:
 	Klient searchCustomer(std::string pesel);
 	Film searchFilm(std::string id);
 	void initializeData();
-	void selectOption(std::string _action, void(*def), void(*a), void(*b), void(*c), void(*d), void(*e), void(*f), void(*g), void(*h), void(*i), void(*j));
 	void displayMenu();
 	void loadFilms();
 	void loadCustomers();

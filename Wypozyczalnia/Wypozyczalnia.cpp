@@ -28,7 +28,7 @@ bool Wypozyczalnia::isStringANumber(std::string stream) {
 		if (stream[i] == '0' or stream[i] == '1' or stream[i] == '2' or stream[i] == '3' or stream[i] == '4' or stream[i] == '5' or stream[i] == '6' or stream[i] == '7' or stream[i] == '8' or stream[i] == '9' or stream[i] == '.') {
 			isCorrect = true;
 		}
-		if (!isCorrect and countDots < 2) {
+		if (!isCorrect or countDots > 1) {
 			return false;
 		}
 	}
@@ -296,7 +296,7 @@ void Wypozyczalnia::displayPrintMenu() {
 	std::cout << "-    WYPO¯YCZALNIA FILMÓW   -" << std::endl;
 	std::cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
 	std::cout << std::endl;
-	std::cout << "Drukowanie";
+	std::cout << "Drukowanie" << std::endl;
 	std::cout << "\t[ 1 ] Drukuj ca³¹ bazê danych" << std::endl;
 	std::cout << "\t[ 2 ] Drukuj bazê klientów" << std::endl;
 	std::cout << "\t[ 3 ] Drukuj bazê filmów" << std::endl;
@@ -519,7 +519,7 @@ void Wypozyczalnia::displayAddFilm() {
 	}
 	else {
 		std::cout << "\tWprowadŸ autora filmu: ";
-		std::cin.ignore();
+		//std::cin.ignore();
 		std::getline(std::cin, author);
 		if (author == "q") {
 			displayFilmsMenu();
@@ -531,7 +531,7 @@ void Wypozyczalnia::displayAddFilm() {
 		}
 		else {
 			std::cout << "\tWprowadŸ gatunek filmu: ";
-			std::cin.ignore();
+			//std::cin.ignore();
 			std::getline(std::cin, genre);
 			if (genre == "q") {
 				displayFilmsMenu();
@@ -587,7 +587,7 @@ void Wypozyczalnia::displayAddCustomer() {
 	}
 	else {
 		std::cout << "\tWprowadŸ imie klienta: ";
-		std::cin.ignore();
+		//std::cin.ignore();
 		std::getline(std::cin, name);
 		if (name == "q") {
 			displayCustomersMenu();
@@ -599,7 +599,7 @@ void Wypozyczalnia::displayAddCustomer() {
 		}
 		else {
 			std::cout << "\tWprowadŸ nazwisko klienta: ";
-			std::cin.ignore();
+			//std::cin.ignore();
 			std::getline(std::cin, surname);
 			if (surname == "q") {
 				displayCustomersMenu();
@@ -611,7 +611,7 @@ void Wypozyczalnia::displayAddCustomer() {
 			}
 			else {
 				std::cout << "\tWprowadŸ p³eæ klienta ( M / K ): ";
-				std::cin.ignore();
+				//std::cin.ignore();
 				std::getline(std::cin, gender);
 				if (gender == "q") {
 					displayCustomersMenu();
@@ -623,7 +623,7 @@ void Wypozyczalnia::displayAddCustomer() {
 				}
 				else {
 					std::cout << "\tWprowadŸ wiek klienta: ";
-					std::cin.ignore();
+					//std::cin.ignore();
 					std::getline(std::cin, _age);
 					if (_age == "q") {
 						displayCustomersMenu();
@@ -636,7 +636,7 @@ void Wypozyczalnia::displayAddCustomer() {
 					else {
 						int age = std::stoi(_age);
 						std::cout << "\tWprowadŸ miasto, z którego pochodzi klient: ";
-						std::cin.ignore();
+						//std::cin.ignore();
 						std::getline(std::cin, city);
 						if (city == "q") {
 							displayCustomersMenu();
@@ -1006,13 +1006,20 @@ void Wypozyczalnia::printAll() {
 		fileInput << "Brak filmów w bazie danych" << std::endl << std::endl;
 	}
 	else {
-
+		std::string borrowesPesel;
 		for (Film actualFilm : films) {
 			numberAll++;
-			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + ", \tcena: " + std::to_string(actualFilm.getPrice()) + " z³";
+			std::string fixedPrice = std::to_string(actualFilm.getPrice());
+			fixedPrice.resize(fixedPrice.size() - 4);
+			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + " \t( gatunek: " + actualFilm.getGenre() + " ) " + ", \tcena: " + fixedPrice + " z³";
 			if (!actualFilm.getAvailable()) {
 				numBorrowed++;
-				stream += " \t[ WYPO¯YCZONO ]";
+				for (WypozyczonyFilm borrowedFilm : borrowedFilms) {
+					if (borrowedFilm.getId() == actualFilm.getId()) {
+						borrowesPesel = borrowedFilm.getBorrowersPesel();
+					}
+				}
+				stream += " \t[ WYPO¯YCZONO -- pesel wypo¿yczaj¹cego: " + borrowesPesel + " ]";
 			}
 			stream += "\n";
 			fileInput << stream;
@@ -1043,7 +1050,7 @@ void Wypozyczalnia::printAll() {
 			}
 			if (actualCustomer.getNumOfFilms() > 0) {
 				numBorrowed++;
-				stream += ", \t[ D£U¯NIK ]";
+				stream += ", \t[ D£U¯NIK ( " + std::to_string(actualCustomer.getNumOfFilms()) + " ) ]";
 			}
 			stream += "\n";
 			fileInput << stream;
@@ -1088,7 +1095,7 @@ void Wypozyczalnia::printCustomers() {
 			}
 			if (actualCustomer.getNumOfFilms() > 0) {
 				numBorrowed++;
-				stream += ", \t[ D£U¯NIK ]";
+				stream += ", \t[ D£U¯NIK ( " + std::to_string(actualCustomer.getNumOfFilms()) + " ) ]";
 			}
 			stream += "\n";
 			fileInput << stream;
@@ -1124,13 +1131,20 @@ void Wypozyczalnia::printFilms() {
 		fileInput << "Brak filmów w bazie danych" << std::endl << std::endl;
 	}
 	else {
-
+		std::string borrowesPesel;
 		for (Film actualFilm : films) {
 			numberAll++;
-			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + ", \tcena: " + std::to_string(actualFilm.getPrice()) + " z³";
+			std::string fixedPrice = std::to_string(actualFilm.getPrice());
+			fixedPrice.resize(fixedPrice.size() - 4);
+			stream = "(id: " + actualFilm.getId() + ") \t\"" + actualFilm.getTitle() + "\" - " + actualFilm.getAuthor() + " \t( gatunek: " + actualFilm.getGenre() + " ) " + ", \tcena: " + fixedPrice + " z³";
 			if (!actualFilm.getAvailable()) {
 				numBorrowed++;
-				stream += " \t[ WYPO¯YCZONO ]";
+				for (WypozyczonyFilm borrowedFilm : borrowedFilms) {
+					if (borrowedFilm.getId() == actualFilm.getId()) {
+						borrowesPesel = borrowedFilm.getBorrowersPesel();
+					}
+				}
+				stream += " \t[ WYPO¯YCZONO -- pesel wypo¿yczaj¹cego: " + borrowesPesel + " ]";
 			}
 			stream += "\n";
 			fileInput << stream;
