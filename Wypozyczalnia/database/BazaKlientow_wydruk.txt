@@ -3,13 +3,17 @@
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 BAZA DANYCH WSZYSTKICH FILMÓW I KLIENTÓW
-	Data wydruku: 01-06-2022
+	Data wydruku: 02-06-2022
 
 WSZYSCY KLIENCI W BAZIE:
 
-(pesel: 123456789) 	lol mol, 	p³eæ: M, wiek: 44, 	miejscowoœæ: tak, 	[ D£U¯NIK ( 1 ) ]
+(pesel: 111111) 	Lukasz Jarzab, 	p³eæ: M, wiek: 21, 	miejscowoœæ: Cieszyn
+(pesel: 22222) 	Kacper Moskala, 	p³eæ: M, wiek: 22, 	miejscowoœæ: Chorzow
+(pesel: 333333) 	Aleksandra Sobczak, 	p³eæ: K, wiek: 19, 	miejscowoœæ: Katowice, 	[ D£U¯NIK ( 2 ) ]
+(pesel: 444444) 	Bartek Bienkowski, 	p³eæ: M, wiek: 16, 	miejscowoœæ: Cieszyn
+(pesel: 99999) 	Hanna Steciuk, 	p³eæ: K, wiek: 23, 	miejscowoœæ: Ustron
 
-Liczba klientów w bazie danych: 1
-Liczba klientów p³ci mêskiej w bazie danych: 1
-Liczba klientów p³ci ¿eñskiej w bazie danych: 0
+Liczba klientów w bazie danych: 5
+Liczba klientów p³ci mêskiej w bazie danych: 3
+Liczba klientów p³ci ¿eñskiej w bazie danych: 2
 Liczba klientów, którzy wypo¿yczyli co najmniej jeden film: 1

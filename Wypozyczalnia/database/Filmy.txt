@@ -1,2 +1,4 @@
-1119	true	tak	srak	ak	44.27
-4352	true	lol	lol	lol	44.66
+1553	true	Mikolajek	Sante	bajka	14.79
+1440	true	Auta	Disney	familijne	9.99
+6186	false	Hobbit	WarnerBros	fantasy	29.99
+1685	false	Shrek	Dreamworks	familijne	19.00
